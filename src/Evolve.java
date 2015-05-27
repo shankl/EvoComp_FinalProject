@@ -83,7 +83,7 @@ public class Evolve {
     		bacteria.add(new Bacteria(numViabilityGenes, interactModel, costResistance));
     	}
     	for (int i = 0; i < virusPop; i++){
-    		viruses.add(new Virus());
+    		viruses.add(new Virus(interactModel, costVirulence));
     	}
     	
     	
