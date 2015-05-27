@@ -68,6 +68,7 @@ public class Evolve {
     	                    costVirulence = Double.parseDouble(value);
     	                    
     	            }
+    			reader.close();
 
     		}
     	}
@@ -79,7 +80,7 @@ public class Evolve {
     	ArrayList<Virus> viruses = new ArrayList<Virus>();
     	
     	for (int i = 0; i <  hostPop; i++){
-    		bacteria.add(new Bacteria());
+    		bacteria.add(new Bacteria(numViabilityGenes, interactModel, costResistance));
     	}
     	for (int i = 0; i < virusPop; i++){
     		viruses.add(new Virus());

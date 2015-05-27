@@ -7,14 +7,19 @@ import java.util.*;
 
 public class Bacteria {
 	
-	int interactionModel = 0;
-	int mutator = 1;
-	int numViabilityGenes = 5;
+	int interactionModel;
+	int numViabilityGenes;
+	double costResistance;
+	int mutator = 0;
 	
 	ArrayList<int[]> genome;
 
-    public Bacteria() {
+    public Bacteria(int numViabilityGenes, int interactModel, double costResistance) {
     	genome = new ArrayList<int[]>();
+    	this.interactionModel = interactModel;
+    	this.numViabilityGenes = numViabilityGenes;
+    	this.costResistance = costResistance;
+    	
     	
     	int[] interactionModelGene = new int[1];
     	interactionModelGene[0] = interactionModel;
