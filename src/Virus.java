@@ -4,17 +4,17 @@ import java.util.ArrayList;
  * Created by Samuel Greaves on 5/23/2015.
  */
 public class Virus {
-	
-	int interactionModel = 0;
 	int mutator = 1;
-
+	double costVirulence;
+	
 	ArrayList<int[]> genome;
 	
-    public Virus(){
+    public Virus(int interactModel, double costVirulence){
     	genome = new ArrayList<int[]>();
+    	this.costVirulence = costVirulence;
     	
     	int[] interactionModelGene = new int[1];
-    	interactionModelGene[0] = interactionModel;
+    	interactionModelGene[0] = interactModel;
     	genome.add(interactionModelGene);
     	
     	int[] mutatorGene = new int[1];

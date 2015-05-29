@@ -11,8 +11,38 @@ public class Evolve {
 	public static int hostPop = 10;
 	public static int virusPop = 10;
 	
+    /**
+     * selection - replace entire population using fitness proportional selection with
+     * given scale (no scaling if scale < 1) and stochastic universal sampling.
+     **/
+    public void fitPropSelect(double scale) {
+        this.shuffle(popSize);
+        Individual[] newPop = new Individual[popSize];
+        double sumFit = 0;
+        for (Individual ind : inds) sumFit += getModFitness(ind, scale);
 
-	
+        // if all sharedFits are 0, just return without changing population
+        if ((scale<=1 && sumFit==0) || (scale>1 && sumFit==popSize)) return;
+
+        double space = sumFit/popSize;
+        double curChoicePoint = space/2;
+        double curSumFit = 0;
+        int curPopIndex = -1;
+        int newPopIndex = 0;
+
+        while (newPopIndex < newPop.length) {
+            if (curSumFit >= curChoicePoint) {
+                newPop[newPopIndex] = new Individual(inds[curPopIndex]);
+                newPopIndex++;
+                curChoicePoint += space;
+            }
+            else {
+                curPopIndex++;
+                curSumFit += getModFitness(inds[curPopIndex], scale);
+            }
+        }
+        inds = newPop;
+    }
 	
 
     public static  void main(String[] args){
@@ -86,6 +116,14 @@ public class Evolve {
     		viruses.add(new Virus(interactModel, costVirulence));
     	}
     	
+    	for (int i = 0; i < gens; i++ ) {
+    		// select viruses that will infect
+    		// fitness virus
+    		// offspring virus
+    		// crossover
+    		// mutate virus
+   
+    	}
     	
     	
     	System.out.println("Done");
