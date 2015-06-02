@@ -1,8 +1,9 @@
 Generations				= 100
 Virus Pop Size			= 10
 Bacteria Pop Size		= 10
-Mutation Rate			= .5
+Mutation Rate			= .01
 Cost of Virulence		= 0
 Cost of Resistance		= 0
 Number Viability Genes	= 5
+Max Number of Virus Children = 5
 Interaction Model		= 1	

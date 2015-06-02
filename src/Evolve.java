@@ -52,15 +52,12 @@ public class Evolve {
     	int bacPopSize = -1;
     	int numViabilityGenes = -1;
     	int interactModel = -1;
+    	int maxVirusChild = -1;
     	double mutRate = -1;
     	double costResistance = -1;
     	double costVirulence = -1;
     	
-    	
-    	
-    	
-    	
-    	
+    	// reads in parameters from config file
     	try {
     		BufferedReader reader = new BufferedReader(new FileReader(new File("config.txt")));
     		
@@ -96,16 +93,18 @@ public class Evolve {
     	                    
     	                else if (varName.equals( "Cost of Virulence"))
     	                    costVirulence = Double.parseDouble(value);
+    	                else if (varName.equals( "Max Number of Virus Children"))	
+    	                	maxVirusChild = Integer.parseInt(value);
     	                    
     	            }
     			reader.close();
-
     		}
     	}
     	catch (Exception e){
     		e.printStackTrace();
     	}
     	
+    	// initialize populations
     	ArrayList<Bacteria> bacteria =  new ArrayList<Bacteria>();
     	ArrayList<Virus> viruses = new ArrayList<Virus>();
     	
@@ -113,7 +112,7 @@ public class Evolve {
     		bacteria.add(new Bacteria(numViabilityGenes, interactModel, costResistance));
     	}
     	for (int i = 0; i < virusPop; i++){
-    		viruses.add(new Virus(interactModel, costVirulence));
+    		viruses.add(new Virus(interactModel, costVirulence, maxVirusChild));
     	}
     	
     	for (int i = 0; i < gens; i++ ) {
