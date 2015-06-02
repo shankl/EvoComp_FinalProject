@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.lang.Math;
 
 /**
  * Created by Samuel Greaves on 5/23/2015.
@@ -33,5 +34,18 @@ public class Virus {
     	}	
     	virulenceAlleles[0] = 1;
     	genome.add(virulenceAlleles);
+    }
+    
+    // evaluates fitness yielded by individual bacteria
+    // fitness = number of children able to have
+    // cost of virulence lessens amount gained from each virulence gene
+    public double evalFitness(Bacteria host){
+    	double fitness = 0;
+    	int vir = 0;
+    	for (int i = 0; i < genome.get(1).length; i++){
+    		fitness += genome.get(1)[i];
+    	}
+    	fitness = Math.pow(1.0-(costVirulence*genome.get(0)[0]), vir);
+    	return fitness;
     }
 }

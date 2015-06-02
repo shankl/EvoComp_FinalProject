@@ -3,6 +3,7 @@
  */
 
 import java.util.*;
+import java.lang.Math;
 
 
 public class Bacteria {
@@ -10,15 +11,17 @@ public class Bacteria {
 	int interactionModel;
 	int numViabilityGenes;
 	double costResistance;
+	double costDeleterious;
 	int mutator = 0;
 	
 	ArrayList<int[]> genome;
 
-    public Bacteria(int numViabilityGenes, int interactModel, double costResistance) {
+    public Bacteria(int numViabilityGenes, int interactModel, double costResistance, double costDeleterious) {
     	genome = new ArrayList<int[]>();
     	this.interactionModel = interactModel;
     	this.numViabilityGenes = numViabilityGenes;
     	this.costResistance = costResistance;
+    	this.costDeleterious = costDeleterious; 
     	
     	// adds interactionModel (1: gene-for-gene model)
     	int[] interactionModelGene = new int[1];
@@ -46,13 +49,25 @@ public class Bacteria {
     	genome.add(resistAlleles);
     }
     
-    //fitness
-    public int evalFitness(){
-    	int fitness = 0;
+    // fitness for bacteria affected by one virus (viruses are cumulative)
+    public double evalFitness(Virus parasite, double virusFitness){
+    	double fitness;
+    	int resist = 0;
+    	int delet = 0;
     	for (int i = 0; i < genome.get(2).length; i++){
-    		fitness += genome.get(2)[i];
+    		delet += genome.get(2)[i];
     	}
-    	
+    	delet = genome.get(2).length - delet;
+    	for (int i = 0; i < genome.get(3).length; i++){
+    		resist += genome.get(3)[i];
+    	}
+    	int maxVir = parasite.genome.get(1).length;
+    	double vir = 0;
+    	for (int i = 0; i < maxVir; i++) {
+    		vir += parasite.genome.get(1)[i]/maxVir;
+    	}
+    	fitness = Math.pow(1-(costResistance*genome.get(0)[0]),resist)*(1-(virusFitness*vir));
+    	fitness = fitness*Math.pow((1-costDeleterious),delet);
     	return fitness;
     }
     

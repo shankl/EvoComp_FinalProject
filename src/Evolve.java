@@ -56,6 +56,7 @@ public class Evolve {
     	double mutRate = -1;
     	double costResistance = -1;
     	double costVirulence = -1;
+    	double costDeleterious = -1;
     	
     	// reads in parameters from config file
     	try {
@@ -95,6 +96,8 @@ public class Evolve {
     	                    costVirulence = Double.parseDouble(value);
     	                else if (varName.equals( "Max Number of Virus Children"))	
     	                	maxVirusChild = Integer.parseInt(value);
+    	                else if (varName.equals( "Cost of Deleterious Alleles"))
+    	                	costDeleterious = Double.parseDouble(value);
     	                    
     	            }
     			reader.close();
@@ -109,7 +112,7 @@ public class Evolve {
     	ArrayList<Virus> viruses = new ArrayList<Virus>();
     	
     	for (int i = 0; i <  hostPop; i++){
-    		bacteria.add(new Bacteria(numViabilityGenes, interactModel, costResistance));
+    		bacteria.add(new Bacteria(numViabilityGenes, interactModel, costResistance, costDeleterious));
     	}
     	for (int i = 0; i < virusPop; i++){
     		viruses.add(new Virus(interactModel, costVirulence, maxVirusChild));
