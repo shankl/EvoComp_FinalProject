@@ -15,34 +15,46 @@ public class Evolve {
      * selection - replace entire population using fitness proportional selection with
      * given scale (no scaling if scale < 1) and stochastic universal sampling.
      **/
-    public void fitPropSelect(double scale) {
-        this.shuffle(popSize);
-        Individual[] newPop = new Individual[popSize];
-        double sumFit = 0;
-        for (Individual ind : inds) sumFit += getModFitness(ind, scale);
-
-        // if all sharedFits are 0, just return without changing population
-        if ((scale<=1 && sumFit==0) || (scale>1 && sumFit==popSize)) return;
-
-        double space = sumFit/popSize;
-        double curChoicePoint = space/2;
-        double curSumFit = 0;
-        int curPopIndex = -1;
-        int newPopIndex = 0;
-
-        while (newPopIndex < newPop.length) {
-            if (curSumFit >= curChoicePoint) {
-                newPop[newPopIndex] = new Individual(inds[curPopIndex]);
-                newPopIndex++;
-                curChoicePoint += space;
-            }
-            else {
-                curPopIndex++;
-                curSumFit += getModFitness(inds[curPopIndex], scale);
-            }
-        }
-        inds = newPop;
-    }
+//    public void fitPropSelect(double scale) {
+//        this.shuffle(popSize);
+//        Individual[] newPop = new Individual[popSize];
+//        double sumFit = 0;
+//        for (Individual ind : inds) sumFit += getModFitness(ind, scale);
+//
+//        // if all sharedFits are 0, just return without changing population
+//        if ((scale<=1 && sumFit==0) || (scale>1 && sumFit==popSize)) return;
+//
+//        double space = sumFit/popSize;
+//        double curChoicePoint = space/2;
+//        double curSumFit = 0;
+//        int curPopIndex = -1;
+//        int newPopIndex = 0;
+//
+//        while (newPopIndex < newPop.length) {
+//            if (curSumFit >= curChoicePoint) {
+//                newPop[newPopIndex] = new Individual(inds[curPopIndex]);
+//                newPopIndex++;
+//                curChoicePoint += space;
+//            }
+//            else {
+//                curPopIndex++;
+//                curSumFit += getModFitness(inds[curPopIndex], scale);
+//            }
+//        }
+//        inds = newPop;
+//    }
+	
+	public void printPop(ArrayList<Bacteria> bacteria, ArrayList<Virus> viruses){
+		System.out.println("Bacteria");
+		for (Bacteria b: bacteria){
+			System.out.println(b.toString());
+		}
+		System.out.println("Viruses");
+		for (Virus v: viruses){
+			System.out.println(v.toString());
+		}
+			
+	}
 	
 
     public static  void main(String[] args){
@@ -58,9 +70,12 @@ public class Evolve {
     	double costVirulence = -1;
     	double costDeleterious = -1;
     	
+    	Evolve ev = new Evolve();
+    	
     	// reads in parameters from config file
     	try {
-    		BufferedReader reader = new BufferedReader(new FileReader(new File("config.txt")));
+    		
+    		BufferedReader reader = new BufferedReader(new FileReader("config.txt"));
     		
     		String line;
     		while ((line = reader.readLine()) != null){
@@ -99,23 +114,28 @@ public class Evolve {
     	                else if (varName.equals( "Cost of Deleterious Alleles"))
     	                	costDeleterious = Double.parseDouble(value);
     	                    
-    	            }
-    			reader.close();
+    	            }    			
     		}
+    		reader.close();
     	}
     	catch (Exception e){
     		e.printStackTrace();
     	}
     	
+    	
+    	
     	// initialize populations
     	ArrayList<Bacteria> bacteria =  new ArrayList<Bacteria>();
     	ArrayList<Virus> viruses = new ArrayList<Virus>();
+    	int serialID = 1;
     	
     	for (int i = 0; i <  hostPop; i++){
-    		bacteria.add(new Bacteria(numViabilityGenes, interactModel, costResistance, costDeleterious));
+    		bacteria.add(new Bacteria(numViabilityGenes, interactModel, costResistance, costDeleterious, serialID));
+    		serialID++;
     	}
     	for (int i = 0; i < virusPop; i++){
-    		viruses.add(new Virus(interactModel, costVirulence, maxVirusChild));
+    		viruses.add(new Virus(interactModel, costVirulence, maxVirusChild, serialID));
+    		serialID++;
     	}
     	
     	for (int i = 0; i < gens; i++ ) {
@@ -127,7 +147,7 @@ public class Evolve {
    
     	}
     	
-    	
+    	ev.printPop(bacteria, viruses);
     	System.out.println("Done");
     }
 }

@@ -12,16 +12,18 @@ public class Bacteria {
 	int numViabilityGenes;
 	double costResistance;
 	double costDeleterious;
+	int id;
 	int mutator = 0;
 	
 	ArrayList<int[]> genome;
 
-    public Bacteria(int numViabilityGenes, int interactModel, double costResistance, double costDeleterious) {
+    public Bacteria(int numViabilityGenes, int interactModel, double costResistance, double costDeleterious, int id) {
     	genome = new ArrayList<int[]>();
     	this.interactionModel = interactModel;
     	this.numViabilityGenes = numViabilityGenes;
     	this.costResistance = costResistance;
     	this.costDeleterious = costDeleterious; 
+    	this.id = id;
     	
     	// adds interactionModel (1: gene-for-gene model)
     	int[] interactionModelGene = new int[1];
@@ -71,5 +73,14 @@ public class Bacteria {
     	return fitness;
     }
     
+    public String toString(){
+    	String str = "";
+    	for (int i = 0; i < genome.size(); i++){
+    		for (int j = 0; j < genome.get(i).length; j++){
+    			str += genome.get(i)[j];
+    		}
+    	}
+    	return id + " " + str;
+    }
     
 }

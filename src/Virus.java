@@ -8,13 +8,15 @@ public class Virus {
 	//int mutator = 1;
 	double costVirulence;
 	int virulence;
+	int id;
 	
 	ArrayList<int[]> genome;
 	
-    public Virus(int interactModel, double costVirulence, int virulence){
+    public Virus(int interactModel, double costVirulence, int virulence, int id){
     	genome = new ArrayList<int[]>();
     	this.costVirulence = costVirulence;
     	this.virulence = virulence;
+    	this.id = id;
     	
     	// adds interactionModel allele (1: gene-for-gene)
     	int[] interactionModelGene = new int[1];
@@ -47,5 +49,15 @@ public class Virus {
     	}
     	fitness = Math.pow(1.0-(costVirulence*genome.get(0)[0]), vir);
     	return fitness;
+    }
+    
+  public String toString(){
+    	String str = "";
+    	for (int i = 0; i < genome.size(); i++){
+    		for (int j = 0; j < genome.get(i).length; j++){
+    			str += genome.get(i)[j];
+    		}
+    	}
+    	return id + " " + str;
     }
 }
