@@ -52,7 +52,8 @@ public class Bacteria {
     }
     
     // fitness for bacteria affected by one virus (viruses are cumulative)
-    public double evalFitness(Virus parasite, double virusFitness){
+    public double evalFitness(Individual ind, double virusFitness){
+    	Virus parasite = (Virus) ind;
     	double fitness;
     	int resist = 0;
     	int delet = 0;
@@ -71,6 +72,10 @@ public class Bacteria {
     	fitness = Math.pow(1-(costResistance*genome.get(0)[0]),resist)*(1-(virusFitness*vir));
     	fitness = fitness*Math.pow((1-costDeleterious),delet);
     	return fitness;
+    }
+    
+    public int getID(){
+    	return id;
     }
     
     public String toString(){

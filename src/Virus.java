@@ -4,7 +4,7 @@ import java.lang.Math;
 /**
  * Created by Samuel Greaves on 5/23/2015.
  */
-public class Virus {
+public class Virus implements Individual {
 	//int mutator = 1;
 	double costVirulence;
 	int virulence;
@@ -41,7 +41,8 @@ public class Virus {
     // evaluates fitness yielded by individual bacteria
     // fitness = number of children able to have
     // cost of virulence lessens amount gained from each virulence gene
-    public double evalFitness(Bacteria host){
+    public double evalFitness(Individual ind){
+    	Bacteria host = (Bacteria) ind;
     	double fitness = 0;
     	int vir = 0;
     	for (int i = 0; i < genome.get(1).length; i++){
@@ -49,6 +50,10 @@ public class Virus {
     	}
     	fitness = Math.pow(1.0-(costVirulence*genome.get(0)[0]), vir);
     	return fitness;
+    }
+    
+    public int getID(){
+    	return id;
     }
     
   public String toString(){

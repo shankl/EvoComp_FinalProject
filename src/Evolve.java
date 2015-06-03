@@ -10,16 +10,18 @@ public class Evolve {
 	
 	public static int hostPop = 10;
 	public static int virusPop = 10;
+	Random rgen = new Random();
+
 	
     /**
      * selection - replace entire population using fitness proportional selection with
      * given scale (no scaling if scale < 1) and stochastic universal sampling.
      **/
-//    public void fitPropSelect(double scale) {
-//        this.shuffle(popSize);
-//        Individual[] newPop = new Individual[popSize];
+//    public void fitPropSelect(double scale, ArrayList<Individual> population) {
+//        this.shuffle(population);
+//        ArrayList<Individual> newPop = new ArrayList<Individual>();
 //        double sumFit = 0;
-//        for (Individual ind : inds) sumFit += getModFitness(ind, scale);
+//        for (Individual ind : population) sumFit += ind.evalFitness(ind);
 //
 //        // if all sharedFits are 0, just return without changing population
 //        if ((scale<=1 && sumFit==0) || (scale>1 && sumFit==popSize)) return;
@@ -43,6 +45,16 @@ public class Evolve {
 //        }
 //        inds = newPop;
 //    }
+
+	private ArrayList<Individual> shuffle(ArrayList<Individual> population) {
+		 ArrayList<Individual> temp = new ArrayList<Individual>();
+         for (int i=0; i<population.size(); i++) {
+             int otherIndex = rgen.nextInt(population.size()-i)+i;
+             temp.add(otherIndex, population.get(i));
+             temp.add(i, population.get(otherIndex));
+         }
+		return temp;
+     }
 	
 	public void printPop(ArrayList<Bacteria> bacteria, ArrayList<Virus> viruses){
 		System.out.println("Bacteria");
@@ -144,6 +156,9 @@ public class Evolve {
     		// offspring virus
     		// crossover
     		// mutate virus
+    		
+//    		ev.fitPropSelect(1, bacteria);
+//    		ev.fitPropSelect(1, viruses);
    
     	}
     	
