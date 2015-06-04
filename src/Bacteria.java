@@ -16,6 +16,13 @@ public class Bacteria {
 	int mutator = 0;
 	
 	ArrayList<int[]> genome;
+	/* 
+	 * Genome layout:
+	 * 0: interaction Model
+	 * 1: mutator
+	 * 2: Viability genes
+	 * 3: Resist Alleles
+	 */
 
     public Bacteria(int numViabilityGenes, int interactModel, double costResistance, double costDeleterious, int id) {
     	genome = new ArrayList<int[]>();
@@ -76,6 +83,14 @@ public class Bacteria {
     
     public int getID(){
     	return id;
+    }
+    
+    public int getViability(){
+    	int count = 0;
+    	for (int i = 0; i < genome.get(2).length; i ++){
+    		count += genome.get(2)[i];
+    	}
+    	return count;
     }
     
     public String toString(){

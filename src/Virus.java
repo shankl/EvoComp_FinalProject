@@ -11,6 +11,12 @@ public class Virus implements Individual {
 	int id;
 	
 	ArrayList<int[]> genome;
+	/* 
+	 * Genome layout:
+	 * 0: interaction Model
+	 * 1: Virulence alleles
+	 * 
+	 */
 	
     public Virus(int interactModel, double costVirulence, int virulence, int id){
     	genome = new ArrayList<int[]>();
@@ -54,6 +60,15 @@ public class Virus implements Individual {
     
     public int getID(){
     	return id;
+    }
+    
+    // This actually returns # virulence alleles, not viability
+    public int getViability(){
+    	int count = 0;
+    	for (int i = 0; i < genome.get(1).length; i ++){
+    		count += genome.get(1)[i];
+    	}
+    	return count;
     }
     
   public String toString(){

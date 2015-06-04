@@ -56,13 +56,13 @@ public class Evolve {
 		return temp;
      }
 	
-	public void printPop(ArrayList<Bacteria> bacteria, ArrayList<Virus> viruses){
+	public void printPop(Population<Bacteria> bacteria, Population<Virus> viruses){
 		System.out.println("Bacteria");
-		for (Bacteria b: bacteria){
+		for (Bacteria b: bacteria.population){
 			System.out.println(b.toString());
 		}
 		System.out.println("Viruses");
-		for (Virus v: viruses){
+		for (Virus v: viruses.population){
 			System.out.println(v.toString());
 		}
 			
@@ -70,87 +70,24 @@ public class Evolve {
 	
 
     public static  void main(String[] args){
+    	final int BACTERIA = 0;
+    	final int VIRUS = 1;
     	
-    	int gens = -1;
-    	int virusPopSize = -1;
-    	int bacPopSize = -1;
-    	int numViabilityGenes = -1;
-    	int interactModel = -1;
-    	int maxVirusChild = -1;
-    	double mutRate = -1;
-    	double costResistance = -1;
-    	double costVirulence = -1;
-    	double costDeleterious = -1;
     	
     	Evolve ev = new Evolve();
     	
-    	// reads in parameters from config file
-    	try {
-    		
-    		BufferedReader reader = new BufferedReader(new FileReader("config.txt"));
-    		
-    		String line;
-    		while ((line = reader.readLine()) != null){
-    			if (!line.isEmpty() && line.charAt(0) != '#') {
-    			  String[] components = line.split("=");
-    			  
-    	              
-    	                String varName = components[0].trim();
-    	                String value = components[1].trim();
-
-    	                if (varName.equals("Generations")) 
-    	                    gens = Integer.parseInt(value);
-    	 
-    	                else if (varName.equals( "Virus Pop Size"))
-    	                    virusPopSize = Integer.parseInt(value);
-    	                
-    	                else if (varName.equals( "Bacteria Pop Size"))
-    	                    bacPopSize = Integer.parseInt(value);
-    	                
-    	                else if (varName.equals( "Number Viability Genes"))
-    	                    numViabilityGenes = Integer.parseInt(value);
-    	                    
-    	                else if (varName.equals( "Interaction Model"))
-    	                    interactModel = Integer.parseInt(value);
-    	                    
-    	                else if (varName.equals( "Mutation Rate"))
-    	                    mutRate = Double.parseDouble(value);  
-    	                    
-    	                else if (varName.equals( "Cost of Resistance"))
-    	                    costResistance = Double.parseDouble(value);
-    	                    
-    	                else if (varName.equals( "Cost of Virulence"))
-    	                    costVirulence = Double.parseDouble(value);
-    	                else if (varName.equals( "Max Number of Virus Children"))	
-    	                	maxVirusChild = Integer.parseInt(value);
-    	                else if (varName.equals( "Cost of Deleterious Alleles"))
-    	                	costDeleterious = Double.parseDouble(value);
-    	                    
-    	            }    			
-    		}
-    		reader.close();
-    	}
-    	catch (Exception e){
-    		e.printStackTrace();
-    	}
-    	
+    	readConfig r = new readConfig();
+    	r.read();
     	
     	
     	// initialize populations
-    	ArrayList<Bacteria> bacteria =  new ArrayList<Bacteria>();
-    	ArrayList<Virus> viruses = new ArrayList<Virus>();
-    	int serialID = 1;
     	
-    	for (int i = 0; i <  hostPop; i++){
-    		bacteria.add(new Bacteria(numViabilityGenes, interactModel, costResistance, costDeleterious, serialID));
-    		serialID++;
-    	}
-    	for (int i = 0; i < virusPop; i++){
-    		viruses.add(new Virus(interactModel, costVirulence, maxVirusChild, serialID));
-    		serialID++;
-    	}
+    	Population<Virus> viruses = new Population<Virus>(r, virusPop, VIRUS);
+    	Population<Bacteria> bacteria = new Population<Bacteria>(r, hostPop, BACTERIA);
     	
-    	for (int i = 0; i < gens; i++ ) {
+    	
+    	
+    	for (int i = 0; i < r.getGens(); i++ ) {
     		// select viruses that will infect
     		// fitness virus
     		// offspring virus
