@@ -6,10 +6,11 @@ import java.util.*;
 import java.lang.Math;
 
 
-public class Bacteria {
+public class Bacteria implements Individual{
 	
 	int interactionModel;
 	int numViabilityGenes;
+	int numResVirGenes;
 	double costResistance;
 	double costDeleterious;
 	int id;
@@ -24,12 +25,13 @@ public class Bacteria {
 	 * 3: Resist Alleles
 	 */
 
-    public Bacteria(int numViabilityGenes, int interactModel, double costResistance, double costDeleterious, int id) {
+    public Bacteria(int numViabilityGenes, int interactModel, int numResVirGenes, double costResistance, double costDeleterious, int id) {
     	genome = new ArrayList<int[]>();
     	this.interactionModel = interactModel;
     	this.numViabilityGenes = numViabilityGenes;
     	this.costResistance = costResistance;
     	this.costDeleterious = costDeleterious; 
+    	this.numResVirGenes = numResVirGenes;
     	this.id = id;
     	
     	// adds interactionModel (1: gene-for-gene model)
@@ -51,15 +53,18 @@ public class Bacteria {
     	int[] resistAlleles = new int[numViabilityGenes];
     	for (int i = 0; i < numViabilityGenes; i++){      	
         	viabilityGene[i] = 1;
-        	resistAlleles[i] = 0;
-    	}	
-    	resistAlleles[0] = 1;
+    	}	   	
     	genome.add(viabilityGene);
+    	for (int i = 0; i < numResVirGenes; i ++ ){
+    		resistAlleles[i] = 0;
+    	}
+    	resistAlleles[0] = 1;
     	genome.add(resistAlleles);
     }
     
     // fitness for bacteria affected by one virus (viruses are cumulative)
-    public double evalFitness(Individual ind, double virusFitness){
+    public double evalFitness(Individual ind){
+    	double virusFitness = 0;
     	Virus parasite = (Virus) ind;
     	double fitness;
     	int resist = 0;
@@ -84,6 +89,7 @@ public class Bacteria {
     public int getID(){
     	return id;
     }
+    
     
     public int getViability(){
     	int count = 0;

@@ -7,7 +7,7 @@ import java.lang.Math;
 public class Virus implements Individual {
 	//int mutator = 1;
 	double costVirulence;
-	int virulence;
+	int numResVirGenes;
 	int id;
 	
 	ArrayList<int[]> genome;
@@ -18,10 +18,10 @@ public class Virus implements Individual {
 	 * 
 	 */
 	
-    public Virus(int interactModel, double costVirulence, int virulence, int id){
+    public Virus(int interactModel, double costVirulence, int numResVirGenes, int id){
     	genome = new ArrayList<int[]>();
     	this.costVirulence = costVirulence;
-    	this.virulence = virulence;
+    	this.numResVirGenes = numResVirGenes;
     	this.id = id;
     	
     	// adds interactionModel allele (1: gene-for-gene)
@@ -36,8 +36,8 @@ public class Virus implements Individual {
     	
     	// adds Virulence alleles- same number as max possible children. 
     	// Initialized to have 1 present
-    	int[] virulenceAlleles = new int[virulence];
-    	for (int i = 0; i < virulence; i++){      	
+    	int[] virulenceAlleles = new int[numResVirGenes];
+    	for (int i = 0; i < numResVirGenes; i++){      	
         	virulenceAlleles[i] = 0;
     	}	
     	virulenceAlleles[0] = 1;
