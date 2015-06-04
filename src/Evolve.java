@@ -80,17 +80,17 @@ public class Evolve {
 	
 	// Matching allele interaction model
 	// infects a bacterium with the first virus it encounters that can infect it
+	// Virus can infect the host if it can match the host's resistance genes and go undetected
 	public Virus matchingAllele(Bacteria b){
 		int[] resistGenes = b.genome.get(3);
 		for (int i = 0; i < viruses.size(); i ++){
 			if (viruses.get(i).genome.get(0)[0] != 0) continue;
-			boolean infect = false;
+			boolean infect = true;
 			int[] virulence = viruses.get(i).genome.get(1);
 			
 			// evaluate whether a virus can infect the bacteria
 			for (int j = 0; j < virulence.length; j++){				
-				// the bacteria is infected if it does not have a corresponding resistance gene to the virulence gene
-				if (!(resistGenes[j] == 0 && virulence[j] == 1)){
+					if (!(resistGenes[j] == 0 && virulence[j] == 1)){
 					infect = false;
 					break;					 
 				}					
@@ -105,9 +105,29 @@ public class Evolve {
 		return new Virus(0);
 	}
 	
-	
+	// Gene for Gene interaction model
+	// infects a bacterium with the first virus it encounters that can infect it
+	// Virus can infect a host if it has a virulence gene that the host does not have a resistance gene for
 	public Virus geneForGene(Bacteria b){
-		
+		int[] resistGenes = b.genome.get(3);
+		for (int i = 0; i < viruses.size(); i ++){
+			if (viruses.get(i).genome.get(0)[0] != 0) continue;
+			boolean infect = false;
+			int[] virulence = viruses.get(i).genome.get(1);
+			
+			// evaluate whether a virus can infect the bacteria
+			for (int j = 0; j < virulence.length; j++){				
+				// the bacteria is infected if it does not have a corresponding resistance gene to the virulence gene
+				if (resistGenes[j] == 0 && virulence[j] == 1){
+					infect = true;
+					break;					 
+				}					
+			}
+			// since there is a one to one infection between virus and bacteria, remove the virus if it can infect
+			if (infect){
+				return viruses.population.remove(i);
+			}
+		}
 		// if no viruses matched, return an empty virus
 		return new Virus (0);
 	}
@@ -122,6 +142,8 @@ public class Evolve {
 		
 		int numBactOffspring = (int) (bacteriaFit * r.maxBactChild);
 		int numVirusOffspring = (int) (virusFit * r.maxVirusChild);
+		
+		// need to know how the phylogeny stuff works before actually doing this
 				
 	}
 	
@@ -171,7 +193,7 @@ public class Evolve {
     	
     	
     	for (int i = 0; i < r.getGens(); i++ ) {
-    		// select viruses that will infect
+    		// Interact the viruses and bacteria. When this is done, the population will be unmutated offspring, and anything that didn't die
     		ev.interact(r);
     		// the parent virus is removed from the pop in the interaction model
     		// the parent bacteria is removed in genOffspring, when the virus kills it, or it has offspring
