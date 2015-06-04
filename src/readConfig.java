@@ -11,10 +11,12 @@ public class readConfig {
 	int numViabilityGenes = -1;
 	int interactModel = -1;
 	int maxVirusChild = -1;
+	int numResVirGenes = -1;
 	double mutRate = -1;
 	double costResistance = -1;
 	double costVirulence = -1;
 	double costDeleterious = -1;
+	
 	
 	public void read(){
 	
@@ -46,7 +48,8 @@ public class readConfig {
 		                    
 		                else if (varName.equals( "Interaction Model"))
 		                    interactModel = Integer.parseInt(value);
-		                    
+		                else if (varName.equals("Number Resistance/Viability Genes"))
+		                	numResVirGenes = Integer.parseInt(value);
 		                else if (varName.equals( "Mutation Rate"))
 		                    mutRate = Double.parseDouble(value);  
 		                    
@@ -59,6 +62,7 @@ public class readConfig {
 		                	maxVirusChild = Integer.parseInt(value);
 		                else if (varName.equals( "Cost of Deleterious Alleles"))
 		                	costDeleterious = Double.parseDouble(value);
+		            
 		                    
 		            }    			
 			}
