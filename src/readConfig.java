@@ -11,6 +11,7 @@ public class readConfig {
 	int numViabilityGenes = -1;
 	int interactModel = -1;
 	int maxVirusChild = -1;
+	int maxBactChild = -1;
 	int numResVirGenes = -1;
 	double mutRate = -1;
 	double costResistance = -1;
@@ -28,43 +29,54 @@ public class readConfig {
 			String line;
 			while ((line = reader.readLine()) != null){
 				if (!line.isEmpty() && line.charAt(0) != '#') {
-				  String[] components = line.split("=");
+					String[] components = line.split("=");
 				  
 		              
-		                String varName = components[0].trim();
-		                String value = components[1].trim();
+	                String varName = components[0].trim();
+	                String value = components[1].trim();
 	
-		                if (varName.equals("Generations")) 
+	                switch (varName){
+	                	case "Generations":
 		                    gens = Integer.parseInt(value);
-		 
-		                else if (varName.equals( "Virus Pop Size"))
-		                    virusPopSize = Integer.parseInt(value);
-		                
-		                else if (varName.equals( "Bacteria Pop Size"))
-		                    bacPopSize = Integer.parseInt(value);
-		                
-		                else if (varName.equals( "Number Viability Genes"))
-		                    numViabilityGenes = Integer.parseInt(value);
-		                    
-		                else if (varName.equals( "Interaction Model"))
-		                    interactModel = Integer.parseInt(value);
-		                else if (varName.equals("Number Resistance/Viability Genes"))
-		                	numResVirGenes = Integer.parseInt(value);
-		                else if (varName.equals( "Mutation Rate"))
-		                    mutRate = Double.parseDouble(value);  
-		                    
-		                else if (varName.equals( "Cost of Resistance"))
-		                    costResistance = Double.parseDouble(value);
-		                    
-		                else if (varName.equals( "Cost of Virulence"))
-		                    costVirulence = Double.parseDouble(value);
-		                else if (varName.equals( "Max Number of Virus Children"))	
-		                	maxVirusChild = Integer.parseInt(value);
-		                else if (varName.equals( "Cost of Deleterious Alleles"))
-		                	costDeleterious = Double.parseDouble(value);
-		            
-		                    
-		            }    			
+		                    break;
+	                	case "Virus Pop Size":
+	                		virusPopSize = Integer.parseInt(value);
+	                		break;
+	                	case "Bacteria Pop Size":
+	                		bacPopSize = Integer.parseInt(value);
+	                		break;
+	                	case "Number Viability Genes":
+	                		numViabilityGenes = Integer.parseInt(value);
+	                		break;
+	                	case "Interaction Model":
+	                		interactModel = Integer.parseInt(value);
+	                		break;
+	                	case "Number Resistance/Viability Genes":
+	                		numResVirGenes = Integer.parseInt(value);
+	                		break;
+	                	case "Mutation Rate":
+	                		mutRate = Double.parseDouble(value);  
+	                		break;
+	                	case "Cost of Resistance":
+	                		costResistance = Double.parseDouble(value);
+	                		break;
+	                	case "Cost of Virulence":
+	                		costVirulence = Double.parseDouble(value);
+	                		break;
+                		case "Cost of Deleterious Alleles":
+	                		costDeleterious = Double.parseDouble(value);
+	                		break;
+                		case "Max Number of Virus Children":
+	                		maxVirusChild = Integer.parseInt(value);
+	                		break;
+                		case "Max Number of Bacteria Children":
+	                		maxBactChild = Integer.parseInt(value);
+	                		break;
+	                		
+	                	default:
+	                		break;
+	                }  	                    
+	           }    			
 			}
 			reader.close();
 		}

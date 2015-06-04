@@ -64,7 +64,7 @@ public class Bacteria implements Individual{
     
     // fitness for bacteria affected by one virus (viruses are cumulative)
     public double evalFitness(Individual ind){
-    	double virusFitness = 0;
+    	double virusFitness = ind.evalFitness(this);
     	Virus parasite = (Virus) ind;
     	double fitness;
     	int resist = 0;

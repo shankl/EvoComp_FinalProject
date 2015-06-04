@@ -8,4 +8,5 @@ Cost of Deleterious Alleles = 0
 Number Viability Genes	= 10
 Number Resistance/Virulence Genes = 5
 Max Number of Virus Children = 5
+Max Number of Bacteria Children = 25
 Interaction Model		= 1	

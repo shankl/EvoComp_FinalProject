@@ -9,6 +9,7 @@ public class Virus implements Individual {
 	double costVirulence;
 	int numResVirGenes;
 	int id;
+	double vFitness;
 	
 	ArrayList<int[]> genome;
 	/* 
@@ -44,9 +45,15 @@ public class Virus implements Individual {
     	genome.add(virulenceAlleles);
     }
     
+    // constructor for empty virus
+    public Virus (int id){
+    	this.id = 0;
+    }
+    
     // evaluates fitness yielded by individual bacteria
     // fitness = number of children able to have
     // cost of virulence lessens amount gained from each virulence gene
+    // This is called by the bacteria evalFitness function, which requires it to calculate its own fitness
     public double evalFitness(Individual ind){
     	Bacteria host = (Bacteria) ind;
     	double fitness = 0;
@@ -55,6 +62,7 @@ public class Virus implements Individual {
     		fitness += genome.get(1)[i];
     	}
     	fitness = Math.pow(1.0-(costVirulence*genome.get(0)[0]), vir);
+    	vFitness = fitness;
     	return fitness;
     }
     
