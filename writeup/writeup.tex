@@ -19,12 +19,12 @@ Bacteria and viruses both cause disease in humans ranging from the common cold t
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.42\textwidth]{figure1.png}
-	\caption{A bacteriophage injecting its genome into a bacteria. The protein capsule both protects the 		genetic information while between hosts and pierces the membrane to allow injection. Adapted from Todar, 2012.}
+	\caption{A bacteriophage injecting its genome into a bacteria. The protein capsule both protects the 			genetic information while between hosts and pierces the membrane to allow injection. Adapted 			from Todar, 2012.}
 \end{figure}
 
 Once the genome has gained entry to the bacteria, the virus hijacks the machinery the host uses to replicate its own genome. In one mechanism of this, the virus incorporates its genome into the host genome, where it gets replicated and transported as the host cell reproduces. A different mechanism uses the host's ribosomes to synthesize proteins to promote virulence as well as new proteins to encapsulate new copies of the virus. Once there are many copies of the virus, they synthesize lysozyme, which breaks open the bacterial cell membrane, killing the host and allowing many new copies of the virus to escape and spread to nearby cells.
 
-For the second mechanism, because the success of the virus means the death of the host, bacteria have evolved methods of resisting viruses. Coevolution has led to an arms race between viruses and bacteria, as they constantly find new ways to get around each other. This is especially evident in one model of virus-bacteria interaction known as gene-for-gene interaction. In these systems, the virus has a number of genes encoding virulence proteins that help it invade a cell and replicate its genome. Likewise, the bacteria has complementary resistance proteins that recognize and destroy the viral proteins. Through many generations, the viruses keep evolving new genes to get around the bacterial defenses, while the bacteria evolve to block resist the new genes. The progression of the genomes is cyclic, since selective pressure only acts on those loci where members of the bacteria population are still susceptible to the virus, and where the virus can still infect some bacteria. As the pressure lifts, specific resistance and virulence genes disappear from the population, since both host and parasite are prioritizing the genes most relevant to their interaction at that point in time (Person, 1959).
+For the second mechanism, because the success of the virus means the death of the host, bacteria have evolved methods of resisting viruses. Coevolution has led to an arms race between viruses and bacteria, as they constantly find new ways to get around each other. This is especially evident in one model of virus-bacteria interaction known as gene-for-gene interaction. In these systems, the virus has a number of genes encoding virulence proteins that help it invade a cell and replicate its genome. Likewise, the bacteria has complementary resistance proteins that recognize and destroy the viral proteins. Through many generations, the viruses keep evolving new genes to get around the bacterial defenses, while the bacteria evolve to block resist the new genes. The progression of the genomes is cyclic, since selective pressure only acts on those loci where members of the bacteria population are still susceptible to the virus, and where the virus can still infect some bacteria. As the pressure lifts, specific resistance and virulence genes disappear from the population, since both host and parasite are prioritizing the genes most relevant to their interaction at that point in time (Person, 1959). The other extreme for virus-host interaction is the matching allele model, where virus genomes are disguised by being exactly identical to segments of the host genome. If the host's defenses cannot tell the difference between invasive genetic information and their own, then the virus can successfully infect the cell. These two models are ends of a continuum of interaction; in mature, most interactions are some mixture of the two systems (Agrawal and Lively, 2002).
 
 One interesting side-effect of this arms race is the relatively elevated mutation rate in many bacteria populations. In 2007, Pal et al. used a mixture of techniques to demonstrate that it was specifically coevolution with viruses that drove the increased mutation rate in susceptible bacteria. The mutation rate was mostly increased over time due to deleterious mutations in mismatch-repair genes, which code for proofreading proteins that normally check new copies of the bacterial genome for mutations and correct them. Without functioning mismatch-repair proteins, mutations are much more likely to passed on without being fixed. One of the tools Pal et al. used in their research was a genetic algorithm that simulated host-virus interactions, which they used specifically to model how mutation rates evolved over time. Their simulation behaved similarly to the predictions of the gene-for-gene model, with host mutation rate plateauing at the maximum allowed, while the frequencies individual genomes fluctuate over time as the selection pressure shifts in response to viral evolution (Figure 2) (Pal et al., 2007).
 
@@ -33,7 +33,7 @@ For our project, we attempted to replicate the simulation run by Pal et al., usi
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\textwidth]{figure2.png}
-	\caption{Frequencies over time of a mutator gene that increases mutation rate 100-fold in the host population and one particular host genotype (Pal et al. 2007).}
+	\caption{Frequencies over time of a mutator gene that increases mutation rate 100-fold in the host 			population and one particular host genotype (Pal et al. 2007).}
 \end{figure}
 
 \section{Methods}
@@ -41,7 +41,7 @@ or Setup?
 
 What did we change from our inspiration?
 \\- Allowing variable population with culls
-\\- focused on gene-for-gene interaction
+\\- focused on gene-for-gene interaction, vs matching allele model (absolutes)
 \\- soooo many fitnesses\\From paper, equation for host:
 \begin{equation}
 W_{H}(i,n) = (1-s_{v})^n(1-c)^z(1-s\cdot W_{Pij})
@@ -54,8 +54,24 @@ W_{Pij} = (1-p)^v
 \end{equation}
 where $p$ is the cost of virulence and $v$ is the number of virulence genes.
 
-- table showing representation of each genome?
-\\- how does selection work?
+\begin{table}[H]
+	\begin{center}
+	 \begin{tabular}{||c c c c c||} 
+	 \hline
+	Individual & Interaction Model & Mutator & Resistance/Virulence & Viability\\ 
+	& 1 bit & 1 bit & n bits & m bits\\
+	 \hline\hline
+ 	Host & yes & yes & yes & yes\\
+	 \hline
+ 	Virus & yes & no & yes & no\\
+	 \hline
+	\end{tabular}
+	\caption{Representation of Virus and Host Individuals. Both are ArrayLists of Arrays.}
+	\label{table:1}
+	\end{center}
+\end{table}
+
+- how does selection work?
 \\- mutation?
 \\- flow chart!
 
@@ -68,6 +84,8 @@ What was hard? What was new? What are some new directions to try?
 - interpreting their methods was interesting-- published for biologists! They didn't plan for people caring so much about their specific algorithm. 
 
 \section{Works Cited}
+Agrawal, A. and C.M. Lively. 2002. Infection genetics: gene-for-gene versus matching-alleles models and \\\-\hspace{0.75cm} all points in between. Evolutionary Ecology Research. 4: 79-90.
+
 Pal, C., M.D. Marcia, A. Oliver, I. Schachar, and A. Buckling. 2007. Coevolution with viruses drives the \\\-\hspace{0.75cm} evolution of bacterial mutation rates. Nature Letters. 450: 1079-1081.
 
 Person, C. 1959. Gene-for-gene relationships in host:parasite systems. Canadian Journal of Botany. 37: \\\-\hspace{0.75cm} 1101- 1130.

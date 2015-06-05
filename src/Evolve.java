@@ -193,15 +193,16 @@ public class Evolve {
     	
     	
     	for (int i = 0; i < r.getGens(); i++ ) {
-    		// Interact the viruses and bacteria. When this is done, the population will be unmutated offspring, and anything that didn't die
+    		// Interact the viruses and bacteria. When this is done, the population will be 
+    		// unmutated offspring, and anything that didn't die 
     		ev.interact(r);
     		// the parent virus is removed from the pop in the interaction model
     		// the parent bacteria is removed in genOffspring, when the virus kills it, or it has offspring
     		
     		
     		
-    		// crossover
-    		// mutate virus
+       		// mutate virus and bacteria
+    		// print population stats--- probably want frequencies over time?
     		
 //    		ev.fitPropSelect(1, bacteria);
 //    		ev.fitPropSelect(1, viruses);
