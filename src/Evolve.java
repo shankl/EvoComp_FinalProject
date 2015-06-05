@@ -88,9 +88,10 @@ public class Evolve {
 			boolean infect = true;
 			int[] virulence = viruses.get(i).genome.get(2);
 			
-			// evaluate whether a virus can infect the bacteria
+			// evaluate whether a virus can infect the bacteria- can't if 
+			// it doesn't match at every index
 			for (int j = 0; j < virulence.length; j++){				
-					if (!(resistGenes[j] == 0 && virulence[j] == 1)){
+					if (!(resistGenes[j] == virulence[j])){
 					infect = false;
 					break;					 
 				}					
@@ -203,9 +204,9 @@ public class Evolve {
     		
        		// mutate virus and bacteria
     		// print population stats--- probably want frequencies over time?
-    		
+    		// fitprop used to control population numbers - cull!
 //    		ev.fitPropSelect(1, bacteria);
-//    		ev.fitPropSelect(1, viruses);
+//    		ev.fitPropSelect(1, viruses);   		
    
     	}
     	
