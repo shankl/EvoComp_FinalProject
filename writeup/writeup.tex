@@ -32,27 +32,12 @@ For our project, we attempted to replicate the simulation run by Pal et al., usi
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\textwidth]{figure2.png}
+	\includegraphics[width=0.75\textwidth]{figure2.png}
 	\caption{Frequencies over time of a mutator gene that increases mutation rate 100-fold in the host 			population and one particular host genotype (Pal et al. 2007).}
 \end{figure}
 
-\section{Methods}
-or Setup? 
-
-What did we change from our inspiration?
-\\- Allowing variable population with culls
-\\- focused on gene-for-gene interaction, vs matching allele model (absolutes)
-\\- soooo many fitnesses\\From paper, equation for host:
-\begin{equation}
-W_{H}(i,n) = (1-s_{v})^n(1-c)^z(1-s\cdot W_{Pij})
-\end{equation}
-Fitness for host $i$ with $n$ deleterious mutations infected by virus $j$, where $s_{v}$ is the effect of each deleterious mutation, $c$ is the cost of each resistance allele, $z$ is the number of resistance alleles, $s$ is maximum virulence of the virus, and $W_{Pij}$ is the fitness of virus $j$ on host $i$. Total fitness for each host is $\sum W_{H}(i,n)$ for all viruses able to infect it. Total fitness for each virus is $\sum W_{Pij}$ for each host it is able to infect. 
-
-Equation for virus:
-\begin{equation}
-W_{Pij} = (1-p)^v
-\end{equation}
-where $p$ is the cost of virulence and $v$ is the number of virulence genes.
+\section{Coevolutionary Genetic Algorithm}
+Viruses and hosts are divided into two populations, with individual genomes being represented by ArrayLists of bit arrays. Both types of genomes have indices for interaction models and mutators, while viruses also have a set of virulence genes and bacteria have a set of resistance genes and one of viability genes (Table 1). The interaction model is either the gene-for-gene model, where the resistance/virulence bits represent genes, or the matching-allele model, where they represent a recognition sequence. In the former, viruses are able to infect if they have a virulence gene for which the bacteria doesn't have the corresponding resistance gene. In the latter, the virus can infect if its virulence sequence exactly matches the bacterial sequence. The mutator in both is switched off by default, but can mutate to increase to mutation rate of carriers by 100-fold. In bacteria, the viability genes serve as a trade-off for increased mutation rate. They can mutate to be deleterious, decreasing fitness, and an increased mutation rate makes that change more likely to occur. Any aspect of each genome can undergo mutation at a rate constant for both populations, except the individuals with mutators switched on. 
 
 \begin{table}[H]
 	\begin{center}
@@ -63,7 +48,7 @@ where $p$ is the cost of virulence and $v$ is the number of virulence genes.
 	 \hline\hline
  	Host & yes & yes & yes & yes\\
 	 \hline
- 	Virus & yes & no & yes & no\\
+ 	Virus & yes & yes & yes & no\\
 	 \hline
 	\end{tabular}
 	\caption{Representation of Virus and Host Individuals. Both are ArrayLists of Arrays.}
@@ -71,11 +56,29 @@ where $p$ is the cost of virulence and $v$ is the number of virulence genes.
 	\end{center}
 \end{table}
 
-- how does selection work? They have potential for certain number of offspring each- are limited by being unable to infect, or being killed before reproducing. This is also where viability comes in.
-\\- mutation?
-\\- flow chart!
+Fitness for each virus is a function of the number of virulence genes in its genome, multiplied by the number of hosts in the current population it is capable of infecting:
 
-\section{Results}
+\begin{equation}
+W_{Pij} = (1-a\cdot p)^v\cdot N,
+\end{equation}
+where $v$ is the number of virulence genes, and N is the number of potential hosts. There is also a cost of virulence, mimicking a trade-off with prioritizing virulence over other genes, represented by $p$. $a$ is the bit representing the interaction model, which is 1 for the gene-for-gene model. For the matching-allele model, counting virulence and resistance genes is irrelevant, so that term equals zero.
+
+The host's equation is more complicated, as it takes into account resistance, viability genes, and the fitness of any viruses infecting it. Fitness for host $i$ with $n$ deleterious mutations infected by virus $j$ is:
+\begin{equation}
+W_{H}(i,n) = (1-s_{v})^n(1-a\cdot c)^z(1-s\cdot W_{Pij}),
+\end{equation}
+
+where $s_{v}$ is the effect of each deleterious mutation, $c$ is the cost of each resistance allele, $z$ is the number of resistance alleles, $s$ is maximum virulence of the virus, and $W_{Pij}$ is the fitness of virus $j$ on host $i$. Total fitness for each host is $\sum W_{H}(i,n)$ for all viruses able to infect it. 
+
+These fitness functions work with the interaction models to operate as a version of fitness-proportional selection (Figure 3). Viruses interact with a sample of the bacterial population, and fitnesses are evaluated before reproduction. Both viruses and bacteria undergo asexual reproduction, and have the potential to make many children. How fit an individual is determines what proportion of its maximum potential children actually get created. These clonal children undergo mutation at the rate dictated by their genome and the systemic mutation rate. Crossover does not occur, as each child has only one parent. Individuals die after reproducing and are removed from the population. The populations are allowed to vary, within certain limits analogous to a carrying capacity. If a population overshoots the limit, individuals are culled in a fitness-proportional manner, with the least fit individuals being more likely to be removed.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{placeholder.png}
+	\caption{Flow chart diagramming what happens in each generation of the algorithm.}
+\end{figure}
+
+\section{Results of Simulation}
 What are some things we've observed? graphs! How close did we come to what other paper saw? What are new things?
 
 \section{Discussion}
