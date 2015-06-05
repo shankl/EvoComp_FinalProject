@@ -42,8 +42,19 @@ or Setup?
 What did we change from our inspiration?
 \\- Allowing variable population with culls
 \\- focused on gene-for-gene interaction
-\\- soooo many fitnesses
-\\- table showing representation of each genome?
+\\- soooo many fitnesses\\From paper, equation for host:
+\begin{equation}
+W_{H}(i,n) = (1-s_{v})^n(1-c)^z(1-s\cdot W_{Pij})
+\end{equation}
+Fitness for host $i$ with $n$ deleterious mutations infected by virus $j$, where $s_{v}$ is the effect of each deleterious mutation, $c$ is the cost of each resistance allele, $z$ is the number of resistance alleles, $s$ is maximum virulence of the virus, and $W_{Pij}$ is the fitness of virus $j$ on host $i$. Total fitness for each host is $\sum W_{H}(i,n)$ for all viruses able to infect it. Total fitness for each virus is $\sum W_{Pij}$ for each host it is able to infect. 
+
+Equation for virus:
+\begin{equation}
+W_{Pij} = (1-p)^v
+\end{equation}
+where $p$ is the cost of virulence and $v$ is the number of virulence genes.
+
+- table showing representation of each genome?
 \\- how does selection work?
 \\- mutation?
 \\- flow chart!
