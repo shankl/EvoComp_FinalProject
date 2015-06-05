@@ -82,11 +82,11 @@ public class Evolve {
 	// infects a bacterium with the first virus it encounters that can infect it
 	// Virus can infect the host if it can match the host's resistance genes and go undetected
 	public Virus matchingAllele(Bacteria b){
-		int[] resistGenes = b.genome.get(3);
+		int[] resistGenes = b.genome.get(2);
 		for (int i = 0; i < viruses.size(); i ++){
 			if (viruses.get(i).genome.get(0)[0] != 0) continue;
 			boolean infect = true;
-			int[] virulence = viruses.get(i).genome.get(1);
+			int[] virulence = viruses.get(i).genome.get(2);
 			
 			// evaluate whether a virus can infect the bacteria
 			for (int j = 0; j < virulence.length; j++){				
@@ -113,7 +113,7 @@ public class Evolve {
 		for (int i = 0; i < viruses.size(); i ++){
 			if (viruses.get(i).genome.get(0)[0] != 0) continue;
 			boolean infect = false;
-			int[] virulence = viruses.get(i).genome.get(1);
+			int[] virulence = viruses.get(i).genome.get(2);
 			
 			// evaluate whether a virus can infect the bacteria
 			for (int j = 0; j < virulence.length; j++){				
