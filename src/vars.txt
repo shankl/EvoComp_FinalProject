@@ -1,0 +1,37 @@
+# Configuration file
+# Edit these to change parameters
+
+# Number of generations to run. Default 100
+nGens: 100
+
+# Initial Population sizes. 
+# Bacteria should be about 100x more than viruses
+# Default Virus size 10
+virusPopSize: 10
+# Default Bacteria size 1000
+bacteriaPopSize: 1000
+
+# Base Mutation Rate as a percent. Default .01%
+mutRate: .01
+
+# Interaction Model. Default 1
+# 0 is matching Allele
+# 1 is Gene for Gene
+interactionModel: 0	
+
+# Costs of various traits
+costOfVirulence: 0
+costOfResistance: 0
+costOfDeleteriousAlleles: 0
+
+# Number of certain genes
+# Default 10 viability, 5 Resistance/Virulence
+numViabilityGenes: 10
+numResVirGenes: 5
+
+# Max number of children
+# Defaults 5 virus, 50 bacteria
+maxVirusChildren: 5
+maxBacteriaChildren: 50
+
+
