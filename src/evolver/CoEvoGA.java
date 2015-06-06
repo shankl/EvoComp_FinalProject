@@ -274,7 +274,7 @@ public class CoEvoGA {
             // mutate virus and bacteria
             EA.mutate();
             
-            // print population stats--- probably want frequencies over time?
+            // print population stats to csv--- probably want frequencies over time?
             
             // fitprop used to control population numbers - cull!
             //    		ev.fitPropSelect(1, bacteria);
