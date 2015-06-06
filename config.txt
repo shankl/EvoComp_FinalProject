@@ -1,5 +1,8 @@
-# Configuration file
-# Edit these to change parameters
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# OLD Configuration file
+# DONT Edit these to change parameters
+# config moved to src/vars.txt :)
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 # Number of generations to run. Default 100
 Generations				= 100
