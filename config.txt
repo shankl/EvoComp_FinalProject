@@ -11,8 +11,8 @@ Virus Pop Size			= 10
 # Default Bacteria size 1000
 Bacteria Pop Size		= 1000
 
-# Base Mutation Rate as a percent. Default .01%
-Mutation Rate			= .01
+# Base Mutation Rate as a percent. Default .001 (1/10%)
+Mutation Rate			= .001
 
 # Interaction Model. Default 1
 # 0 is matching Allele
