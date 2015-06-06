@@ -71,6 +71,10 @@ public class Bacteria {
 		return genome.get(1);
 	}
 	
+	public boolean hasMutator() {
+		return getMutator()[0] == 1;
+	}
+	
 	/* returns viability genes as an int array */
 	public int[] getViabilityGenes() {
 		return genome.get(2);
@@ -146,6 +150,10 @@ public class Bacteria {
      * the chosen bit will not change value, so the expected genomic mutation rate is really 
      * (mutRate * genome length * .5) **/
 	public void mutate(double mutRate, Random rgen) {
+		if (hasMutator()) {
+			mutRate = 0.1;
+		}
+		
 		int[] seg1 = this.genome.get(0);
 		int[] seg2 = this.genome.get(1);
 		int[] seg3 = this.genome.get(2);

@@ -52,6 +52,24 @@ public class BacteriaPopulation {
 			ind.mutate(mutRate, rgen);
 		}
 	}
+	/* returns number of individuals in the population with the mutator gene */
+	public int getNumMutants() {
+		int count = 0;
+		for (Bacteria ind : this.inds) {
+			if (ind.hasMutator()) {
+				count++;
+			}
+		}
+		return count;
+	}
+	
+	/* returns percentage of the population with the mutator gene */
+	public double getPercentMutants() {
+		double count = (double) getNumMutants();
+		double pSize = (double) this.popSize;
+		
+		return count*100.0 / pSize;
+	}
 	
 	/* prints all individuals in the population */
 	public void printAll() {
