@@ -134,16 +134,17 @@ public class CoEvoGA {
     	bacteriaPop.shuffle();
     	
     	Virus infector = null;
+    	int infectorIndex = -1;
     	
     	for (int i=0; i < bacteriaPop.getPopSize() / 10; i++) {
     		Bacteria host = bacteriaPop.getAtIndex(i);
     		switch(host.getInteractionModel()) {
     		case 0:
-    			infector = matchingAllele(host);
+    			infectorIndex = matchingAllele(host);
     			break;
     		
     		case 1:
-    			infector = geneForGene(host);
+    			infectorIndex = geneForGene(host);
     			break;
     		
     		default:
@@ -152,8 +153,8 @@ public class CoEvoGA {
     			break;
     		}
     		
-    		if (infector != null) {
-    			genOffspring(host,infector);
+    		if (infectorIndex > -1) {
+    			genOffspring(i,infectorIndex);
     		}
     	}
     }
@@ -161,7 +162,7 @@ public class CoEvoGA {
 	/** Matching allele interaction model
 	*  infects a bacterium with the first virus it encounters that can infect it
 	*  Virus can infect the host if it can match the host's resistance genes and go undetected */
-    public Virus matchingAllele(Bacteria bacteria) {
+    public int matchingAllele(Bacteria bacteria) {
     	int[] resistGenes = bacteria.getResistAlleles();
     	boolean canInfect = false;
     	int i = 0;
@@ -177,17 +178,17 @@ public class CoEvoGA {
     		i++;
     	}
     	if (i < virusPop.getPopSize()) {
-    		return virusPop.getAtIndex(i);
+    		return i;
     	}
     	
     	// if no viruses matched, return null
-    	return null;
+    	return -1;
     }
     
     // Gene for Gene interaction model
  	// infects a bacterium with the first virus it encounters that can infect it
  	// Virus can infect a host if it has a virulence gene that the host does not have a resistance gene for
-    public Virus geneForGene(Bacteria bacteria) {
+    public int geneForGene(Bacteria bacteria) {
     	int[] resistGenes = bacteria.getResistAlleles();
     	boolean canInfect = false;
     	
@@ -208,28 +209,44 @@ public class CoEvoGA {
     	}
     	
     	if (i < virusPop.getPopSize()) {
-    		return virusPop.getAtIndex(i);
+    		return i;
     	}
     	
     	// if no viruses matched, return null
-    	return null;
+    	return -1;
     }
     
-    public void genOffspring(Bacteria host, Virus virus) {
+    public void genOffspring(int hostIndex, int virusIndex) {
     	if (printDebug == 1){
     		System.out.println("genOffspring whooohahah");
     	}
+    	Bacteria host = bacteriaPop.getAtIndex(hostIndex);
+    	Virus virus = virusPop.getAtIndex(virusIndex);
+    	
     	host.evalFitness(virus);
     	
     	int numBacteriaOffspring = (int) (host.getFitness() * maxBacteriaChildren);
     	int numVirusOffspring = (int) (virus.getFitness() * maxVirusChildren);
     	
+    	Bacteria parentBacteria = bacteriaPop.remove(hostIndex);
+    	Virus parentVirus = virusPop.remove(virusIndex);
+    	
     	for (int i=0; i<numBacteriaOffspring; i++) {
-    		// create from copy
+    		// need to implement this constructor in Bacteria
+    		/*
+    		Bacteria child = new Bacteria(parentBacteria);
+    		child.mutate();
+    		bacteriaPop.add(child);
+    		*/
     	}
     	
     	for (int j=0; j<numVirusOffspring; j++) {
-    		// create from copy
+    		// need to implement this constructor in Virus
+    		/*
+    		Virus child = new Virus(parentVirus);
+    		child.mutate();
+    		virusPop.add(child);
+    		*/
     	}
     }
     
