@@ -75,7 +75,6 @@ public class Bacteria {
 		return getMutator()[0] == 1;
 	}
 
-	Stashed changes
 	/* returns viability genes as an int array */
 	public int[] getViabilityGenes() {
 		return genome.get(2);
@@ -152,10 +151,9 @@ public class Bacteria {
      * (mutRate * genome length * .5) **/
 	public void mutate(double mutRate, Random rgen) {
 		if (hasMutator()) {
-			mutRate = 0.1;
+			mutRate = 100*mutRate;
 		}
-
-Stashed changes
+		
 		int[] seg1 = this.genome.get(0);
 		int[] seg2 = this.genome.get(1);
 		int[] seg3 = this.genome.get(2);

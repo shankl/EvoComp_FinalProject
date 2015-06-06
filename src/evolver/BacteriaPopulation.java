@@ -70,7 +70,6 @@ public class BacteriaPopulation {
 
 		return count*100.0 / pSize;
 	}
-Stashed changes
 
 	/* prints all individuals in the population */
 	public void printAll() {

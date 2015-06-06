@@ -70,19 +70,23 @@ W_{H}(i,n) = (1-s_{v})^n(1-a\cdot c)^z(1-s\cdot W_{Pij}),
 
 where $s_{v}$ is the effect of each deleterious mutation, $c$ is the cost of each resistance allele, $z$ is the number of resistance alleles, $s$ is maximum virulence of the virus, and $W_{Pij}$ is the fitness of virus $j$ on host $i$. Total fitness for each host is $\sum W_{H}(i,n)$ for all viruses able to infect it. 
 
-These fitness functions work with the interaction models to operate as a version of fitness-proportional selection (Figure 3). Viruses interact with a sample of the bacterial population, and fitnesses are evaluated before reproduction. Both viruses and bacteria undergo asexual reproduction, and have the potential to make many children. How fit an individual is determines what proportion of its maximum potential children actually get created. These clonal children undergo mutation at the rate dictated by their genome and the systemic mutation rate. Crossover does not occur, as each child has only one parent. Individuals die after reproducing and are removed from the population. The populations are allowed to vary, within certain limits analogous to a carrying capacity. If a population overshoots the limit, individuals are culled in a fitness-proportional manner, with the least fit individuals being more likely to be removed.
+These fitness functions work with the interaction models to operate as a version of fitness-proportional selection (Figure 3). Viruses interact with a sample of the bacterial population, and fitnesses are evaluated before reproduction. Both viruses and bacteria undergo asexual reproduction, and have the potential to make many children. How fit an individual is determines what proportion of its maximum potential children actually get created. These clonal children undergo mutation at the rate dictated by their genome and the systemic mutation rate. Crossover does not occur, as each child has only one parent. Individuals die after reproducing and are removed from the population. The populations are allowed to vary, within certain limits analogous to a carrying capacity. If a population overshoots the limit, individuals are culled in a fitness-proportional manner, with the least fit individuals being more likely to be removed. We used a phylogenetic tree to track the progress of 'families' of individuals.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\textwidth]{placeholder.png}
+	\includegraphics[width=0.7\textwidth]{flowchart.png}
 	\caption{Flow chart diagramming what happens in each generation of the algorithm.}
 \end{figure}
 
 \section{Results of Simulation}
-What are some things we've observed? graphs! How close did we come to what other paper saw? What are new things?
+- graph demonstrating duplication of results (so comparison is valid!)
+\\- what happens if we let viruses evolve frequent mutation?
+\\- gradient of mutation rates?
+\\- bacterial sampling methods
+\\- evolving interaction models
 
 \section{Discussion}
-What was hard? What was new? What are some new directions to try?
+What was hard? What are some new results/what might they imply biologically? What are some new directions to try?
 
 - interpreting their methods was interesting-- published for biologists! They didn't plan for people caring so much about their specific algorithm. 
 
