@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  5 JUN 2015 16:37
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  6 JUN 2015 11:16
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -239,31 +239,31 @@ File: figure2.png Graphic file (type png)
  <use figure2.png>
 Package pdftex.def Info: figure2.png used on input line 35.
 (pdftex.def)             Requested size: 379.4175pt x 284.84663pt.
- [2] [3 <./figure2.png>] <placeholder.png, id=20, 396.48125pt x 297.11pt>
-File: placeholder.png Graphic file (type png)
+ [2] [3 <./figure2.png>] <flowchart.png, id=20, 449.68pt x 265.99374pt>
+File: flowchart.png Graphic file (type png)
+ <use flowchart.png>
+Package pdftex.def Info: flowchart.png used on input line 77.
+(pdftex.def)             Requested size: 354.12144pt x 209.4793pt.
 
-<use placeholder.png>
-Package pdftex.def Info: placeholder.png used on input line 77.
-(pdftex.def)             Requested size: 303.53708pt x 227.46521pt.
- [4 <./placeholder.png>] [5] (./writeup.aux) ) 
+[4 <./flowchart.png>] [5] (./writeup.aux) ) 
 Here is how much of TeX's memory you used:
  2348 strings out of 493117
- 33111 string characters out of 6135433
+ 33101 string characters out of 6135433
  97983 words of memory out of 5000000
  5784 multiletter control sequences out of 15000+600000
  10737 words of font info for 41 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  37i,7n,31p,1692b,223s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2014/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2014/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2014/texmf-dist
-/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2014/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2014/texmf-dist/fo
-nts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2014/texmf-dist/font
-s/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2014/texmf-dist/fonts/
-type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2014/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmsy10.pfb>
-Output written on writeup.pdf (5 pages, 209540 bytes).
+</usr/local/texlive/2014/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2014/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2014/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2014/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2014/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2014/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2014/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmsy10.pfb>
+Output written on writeup.pdf (5 pages, 250803 bytes).
 PDF statistics:
  58 PDF objects out of 1000 (max. 8388607)
  37 compressed objects within 1 object stream

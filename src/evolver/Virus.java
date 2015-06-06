@@ -126,7 +126,6 @@ public class Virus implements Comparable<Virus>{
 				this.genome.set(0, seg2);
 			}
 		}
-
 	}
 	
 	/* prints virus (format: id genome) */

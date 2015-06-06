@@ -151,9 +151,13 @@ public class Bacteria {
      * (mutRate * genome length * .5) **/
 	public void mutate(double mutRate, Random rgen) {
 		if (hasMutator()) {
-			mutRate = 0.1;
+			mutRate = 100*mutRate;
 		}
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> 6ee5bf4e53f3b9e8a2ff68fd1eb25788490df7b7
 		int[] seg1 = this.genome.get(0);
 		int[] seg2 = this.genome.get(1);
 		int[] seg3 = this.genome.get(2);

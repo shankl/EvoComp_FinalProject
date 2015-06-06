@@ -10,10 +10,13 @@ nGens: 100
 virusPopSize: 10
 # Default Bacteria size 1000
 bacteriaPopSize: 1000
+<<<<<<< HEAD
 # Determines max size of pop. If this is exceeded, 
 # population is culled to the normal pop sizes
 # Default 1.5
 CarryingCapacityRatio: 1.5
+=======
+>>>>>>> 6ee5bf4e53f3b9e8a2ff68fd1eb25788490df7b7
 
 # Base Mutation Rate as a percent. Default .01%
 mutRate: .01
@@ -38,8 +41,11 @@ numResVirGenes: 5
 maxVirusChildren: 5
 maxBacteriaChildren: 50
 
+<<<<<<< HEAD
 # Unrelated things
 GenCSV: 0
 DebugPrint: 0
 
+=======
+>>>>>>> 6ee5bf4e53f3b9e8a2ff68fd1eb25788490df7b7
 
