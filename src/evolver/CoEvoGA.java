@@ -22,6 +22,7 @@ public class CoEvoGA {
 	private Random rgen;
 	private int virusPopSize = -1;
 	private int bacteriaPopSize = -1;
+	private double kRatio = -1;
 	private double mutRate = -1.0;
 	private double costOfVirulence = -1.0;
 	private double costOfResistance = -1.0;
@@ -30,6 +31,8 @@ public class CoEvoGA {
 	private int numResVirGenes = -1;
 	private int maxVirusChildren = -1;
 	private int maxBacteriaChildren = -1;
+	private int genCSV = -1;
+	private int printDebug = -1;
 	
 	/** Set up EA with one virus population and one bacteria population **/
     public CoEvoGA() throws IOException {
@@ -71,6 +74,9 @@ public class CoEvoGA {
                 case "bacteriaPopSize":
                 	bacteriaPopSize = Integer.parseInt(value);
                 	break;
+                case "CarryingCapacityRatio":
+                	kRatio = Double.parseDouble(value);
+                	break;
                 case "mutRate":
                 	mutRate = Double.parseDouble(value);
                 	break;
@@ -94,6 +100,12 @@ public class CoEvoGA {
                 	break;
                 case "maxBacteriaChildren":
                 	maxBacteriaChildren = Integer.parseInt(value);
+                	break;
+                case "GenCSV":
+                	genCSV = Integer.parseInt(value);
+                	break;
+                case "DebugPrint":
+                	printDebug = Integer.parseInt(value);
                 	break;
                 default:
                 	System.out.println("readVars: unrecognized var " + varName + "\n value=" + value);
@@ -188,7 +200,7 @@ public class CoEvoGA {
     		while (j < numResVirGenes) {
     			if (virulence[j] > resistGenes[j]) {
     				canInfect = true;
-    				i--;
+    				break;
     			}
     			j++;
     		}
@@ -204,7 +216,9 @@ public class CoEvoGA {
     }
     
     public void genOffspring(Bacteria host, Virus virus) {
-    	System.out.println("genOffspring whooohahah");
+    	if (printDebug == 1){
+    		System.out.println("genOffspring whooohahah");
+    	}
     	host.evalFitness(virus);
     	
     	int numBacteriaOffspring = (int) (host.getFitness() * maxBacteriaChildren);
@@ -224,16 +238,22 @@ public class CoEvoGA {
     	bacteriaPop.mutate(mutRate);
     }
     
+    public void cull(){
+//    	virusPop.cull(virusPopSize);
+//    	bacteriaPop.cull(bacteriaPopSize);
+    }
+    
 	public static void main(String[] args) throws IOException {
-		System.out.println("Hello world!");
-		
-		 // set up output file and write column headers
-		CSVWriter writer = new CSVWriter(new FileWriter(System.currentTimeMillis() + ".csv"));
-		String[] entries = "gen#p1#p2".split("#");
-		writer.writeNext(entries);
 		
         // initialize GA
         CoEvoGA EA = new CoEvoGA();
+        
+        if (EA.genCSV == 1){
+			 // set up output file and write column headers
+			CSVWriter writer = new CSVWriter(new FileWriter(System.currentTimeMillis() + ".csv"));
+			String[] entries = "gen#p1#p2".split("#");
+			writer.writeNext(entries);
+		}
         
         // stop at given # gens (read in CoEvo constructor from vars file)
         int nGens = EA.getNumGens();
@@ -259,8 +279,15 @@ public class CoEvoGA {
             // fitprop used to control population numbers - cull!
             //    		ev.fitPropSelect(1, bacteria);
             //    		ev.fitPropSelect(1, viruses);
+            if (EA.virusPop.getPopSize() > EA.virusPopSize * EA.kRatio || EA.bacteriaPop.getPopSize() > EA.bacteriaPopSize * EA.kRatio){
+                EA.cull();
+            }
+            
+            System.out.println("gen: " + gens + "\n Bacteria popsize: " + EA.bacteriaPop.getPopSize() + "\n Virus Popsize: " + EA.virusPop.getPopSize());
         }
-        writer.close();
+//        if (EA.genCSV == 1){
+//        	writer.close();
+//        }
         EA.printPopulations();
         
         System.out.println("Done");

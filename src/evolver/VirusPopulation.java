@@ -24,7 +24,7 @@ public class VirusPopulation {
 	
 	/* returns popSize */
 	public int getPopSize() {
-		return this.popSize;
+		return this.inds.size();
 	}
 	
 	/* returns Virus at index i */
