@@ -80,16 +80,9 @@ public class BacteriaPopulation {
         System.out.println();
 	}
 
-	
-//	public void cull(int carryingCapacity){
-//		int viabilityCutoff = 0;
-//
-//		while (popSize > carryingCapacity){
-//			for (Bacteria ind : population){
-//				if (ind.getViability() < viabilityCutoff){
-//
-//				}
-//			}
-//		}
-//}
+	/*
+	public void cull(int targetSize){
+		
+		
+}
 }

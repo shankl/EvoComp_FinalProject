@@ -13,7 +13,7 @@ bacteriaPopSize: 1000
 # Determines max size of pop. If this is exceeded, 
 # population is culled to the normal pop sizes
 # Default 1.5
-CarryingCapacityRatio: 1.5
+CarryingCapacityRatio: 5
 
 # Base Mutation Rate as a percent. Default .01%
 mutRate: .01

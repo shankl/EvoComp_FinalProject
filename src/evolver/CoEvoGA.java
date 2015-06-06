@@ -17,6 +17,7 @@ public class CoEvoGA {
 	private BacteriaPopulation bacteriaPop;
 	private VirusPopulation newVirusPop;
 	private BacteriaPopulation newBacteriaPop;
+	private float sampleProportion = .2;
 	private int nGens = -1;
 	private int interactionModel = -1;
 	private Random rgen;
@@ -136,7 +137,7 @@ public class CoEvoGA {
     	Virus infector = null;
     	int infectorIndex = -1;
     	
-    	for (int i=0; i < bacteriaPop.getPopSize() / 10; i++) {
+    	for (int i=0; i < bacteriaPop.getPopSize() * sampleProportion; i++) {
     		Bacteria host = bacteriaPop.getAtIndex(i);
     		switch(host.getInteractionModel()) {
     		case 0:
@@ -159,6 +160,9 @@ public class CoEvoGA {
     	}
     }
     
+    /* 
+     * TODO add viability to virus
+     */
 	/** Matching allele interaction model
 	*  infects a bacterium with the first virus it encounters that can infect it
 	*  Virus can infect the host if it can match the host's resistance genes and go undetected */
