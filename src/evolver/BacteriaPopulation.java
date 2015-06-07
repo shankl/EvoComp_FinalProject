@@ -80,9 +80,9 @@ public class BacteriaPopulation {
         System.out.println();
 	}
 
-	/*
+	
 	public void cull(int targetSize){
 		
 		
-}
+	}
 }

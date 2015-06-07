@@ -6,16 +6,22 @@ import java.util.Random;
 public class Bacteria {
 	private double costOfResistance;
 	private double costOfDeleteriousAllele;
+	private double fitness;
+	private int id;
+	
 	/*
 	 * Genome layout:
 	 * 0: interaction Model
 	 * 1: mutator
-	 * 2: Viability genes
-	 * 3: Resist Alleles
+	 * 2: Resist Alleles
+	 * 3: Viability genes
 	 */
 	private ArrayList<int[]> genome;
-	private double fitness;
-	private int id;
+	private int intModIndex = 0;
+	private int mutatorIndex = 1;
+	private int resistIndex = 2;
+	private int viabilityIndex = 3;
+	
 
 	/* constructor */
 	public Bacteria(int interactionModel, int numResVirGenes, int numViabilityGenes,
@@ -35,18 +41,7 @@ public class Bacteria {
     	// chance of mutation in genome
     	int[] mutatorGene = new int[1];
     	mutatorGene[0] = 0;
-    	genome.add(mutatorGene);
-
-    	// adds viability genes. All initialized to 1. Can mutate to zero
-    	// (cost for high mutation rate)
-    	int[] viabilityGene = new int[numViabilityGenes];
-
-
-    	for (int i = 0; i < numViabilityGenes; i++){
-        	viabilityGene[i] = 1;
-    	}
-    	genome.add(viabilityGene);
-
+    	genome.add(mutatorGene);    	
 
     	// adds space for resistance alleles. Same number possible as viability
     	// genes. (can change?) initialized with 1 allele
@@ -56,6 +51,15 @@ public class Bacteria {
     	}
     	resistAlleles[0] = 1;
     	genome.add(resistAlleles);
+    	
+    	// adds viability genes. All initialized to 1. Can mutate to zero
+    	// (cost for high mutation rate)
+    	int[] viabilityGene = new int[numViabilityGenes];
+
+    	for (int i = 0; i < numViabilityGenes; i++){
+        	viabilityGene[i] = 1;
+    	}
+    	genome.add(viabilityGene);
 
     	// initial fitness
     	fitness = 0.0;
@@ -63,12 +67,12 @@ public class Bacteria {
 
 	/* returns interaction model */
 	public int getInteractionModel() {
-		return genome.get(0)[0];
+		return genome.get(intModIndex)[0];
 	}
 
 	/* returns mutator */
 	public int[] getMutator() {
-		return genome.get(1);
+		return genome.get(mutatorIndex);
 	}
 
 	public boolean hasMutator() {
@@ -77,19 +81,19 @@ public class Bacteria {
 
 	/* returns viability genes as an int array */
 	public int[] getViabilityGenes() {
-		return genome.get(2);
+		return genome.get(viabilityIndex);
 	}
 
 	/* returns resist genes as an int array */
 	public int[] getResistAlleles() {
-		return genome.get(3);
+		return genome.get(resistIndex);
 	}
 
 	/* returns viability (number of ones in viability genome) */
 	public int getViability() {
 		int count = 0;
-    	for (int i = 0; i < genome.get(2).length; i ++){
-    		count += genome.get(2)[i];
+    	for (int i = 0; i < genome.get(viabilityIndex).length; i ++){
+    		count += genome.get(viabilityIndex)[i];
     	}
     	return count;
 	}
@@ -103,6 +107,24 @@ public class Bacteria {
 	public double getFitness() {
 		return fitness;
 	}
+	
+	/* returns intModIndex */
+	public int getintModIndex() {
+		return intModIndex;
+	}
+	/* returns mutatorIndex */
+	public int getMutatorIndex() {
+		return mutatorIndex;
+	}
+	/* returns resistIndex */
+	public int getResistIndex() {
+		return resistIndex;
+	}
+	/* returns viabilityIndex */
+	public int getViabilityIndex() {
+		return viabilityIndex;
+	}
+	
 
 	/** if scale is valid (>1) fitness = scale^fitness **/
 	public double getModFitness(double scale) {
@@ -153,41 +175,37 @@ public class Bacteria {
 		if (hasMutator()) {
 			mutRate = 100*mutRate;
 		}
-<<<<<<< HEAD
 
-=======
-		
->>>>>>> 6ee5bf4e53f3b9e8a2ff68fd1eb25788490df7b7
-		int[] seg1 = this.genome.get(0);
-		int[] seg2 = this.genome.get(1);
-		int[] seg3 = this.genome.get(2);
-		int[] seg4 = this.genome.get(3);
+		int[] seg1 = this.genome.get(intModelIndex);
+		int[] seg2 = this.genome.get(mutatorIndex);
+		int[] seg3 = this.genome.get(resistIndex);
+		int[] seg4 = this.genome.get(viabilityIndex);
 
 		for (int i=0; i<seg1.length; i++) {
 			if (rgen.nextDouble() < mutRate) {
 				seg1[i] = rgen.nextInt(2);
-				this.genome.set(0, seg1);
+				this.genome.set(indModelIndex, seg1);
 			}
 		}
 
 		for (int i=0; i<seg2.length; i++) {
 			if (rgen.nextDouble() < mutRate) {
 				seg2[i] = rgen.nextInt(2);
-				this.genome.set(0, seg2);
+				this.genome.set(mutatorIndex, seg2);
 			}
 		}
 
 		for (int i=0; i<seg3.length; i++) {
 			if (rgen.nextDouble() < mutRate) {
 				seg3[i] = rgen.nextInt(2);
-				this.genome.set(0, seg3);
+				this.genome.set(resistIndex, seg3);
 			}
 		}
 
 		for (int i=0; i<seg4.length; i++) {
 			if (rgen.nextDouble() < mutRate) {
 				seg4[i] = rgen.nextInt(2);
-				this.genome.set(0, seg4);
+				this.genome.set(viabilityIndex, seg4);
 			}
 		}
 	}
