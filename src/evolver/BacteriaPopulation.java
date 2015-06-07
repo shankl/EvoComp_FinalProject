@@ -73,7 +73,7 @@ public class BacteriaPopulation {
 
 	/* prints all individuals in the population */
 	public void printAll() {
-		System.out.println("current population:");
+		System.out.println("Bacteria population:");
         for (int i=0; i<popSize; i++) {
             inds.get(i).print();
         }
@@ -82,7 +82,32 @@ public class BacteriaPopulation {
 
 	
 	public void cull(int targetSize){
-		
+		//this.shuffle(inds);
+       ArrayList<Bacteria> newPop = new ArrayList<Bacteria>();
+       double sumFit = 0;
+       for (Bacteria ind : inds) sumFit += ind.calcObjFit();
+
+       // if all sharedFits are 0, just return without changing population
+       if (sumFit==0) return;
+
+       double space = sumFit/popSize;
+       double curChoicePoint = space/2;
+       double curSumFit = 0;
+       int curPopIndex = -1;
+       int newPopIndex = 0;
+
+       while (newPopIndex < inds.size()) {
+           if (curSumFit >= curChoicePoint) {
+               newPop.set(newPopIndex, inds.get(curPopIndex));
+               newPopIndex++;
+               curChoicePoint += space;
+           }
+           else {
+               curPopIndex++;
+               curSumFit += inds.get(curPopIndex).calcObjFit();
+           }
+       }
+       inds = newPop;
 		
 	}
 }

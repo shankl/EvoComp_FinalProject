@@ -42,7 +42,7 @@ public class CoEvoGA {
         rgen = new Random();
         
         // initialize populations
-        virusPop = new VirusPopulation(virusPopSize, rgen, interactionModel, numResVirGenes, costOfVirulence,numViabilityGenes, serialID);
+        virusPop = new VirusPopulation(virusPopSize, rgen, interactionModel, numResVirGenes, costOfVirulence, numViabilityGenes, costOfDeleteriousAlleles, serialID);
         bacteriaPop = new BacteriaPopulation(bacteriaPopSize, rgen, interactionModel, numResVirGenes, numViabilityGenes, costOfResistance, costOfDeleteriousAlleles, serialID + virusPopSize);
     }
 	
@@ -124,7 +124,9 @@ public class CoEvoGA {
     
     /** print all individuals in each pop **/
     public void printPopulations() {
+    	
         bacteriaPop.printAll();
+        
         virusPop.printAll();
     }
     
@@ -260,8 +262,8 @@ public class CoEvoGA {
     }
     
     public void cull(){
-//    	virusPop.cull(virusPopSize);
-//    	bacteriaPop.cull(bacteriaPopSize);
+    	virusPop.cull(virusPopSize);
+    	bacteriaPop.cull(bacteriaPopSize);
     }
     
 	public static void main(String[] args) throws IOException {
@@ -304,7 +306,7 @@ public class CoEvoGA {
                 EA.cull();
             }
             
-            System.out.println("gen: " + gens + "\n Bacteria popsize: " + EA.bacteriaPop.getPopSize() + "\n Virus Popsize: " + EA.virusPop.getPopSize());
+            System.out.println("gen: " + gens + "\t Bacteria popsize: " + EA.bacteriaPop.getPopSize() + "\t Virus Popsize: " + EA.virusPop.getPopSize());
         }
 //        if (EA.genCSV == 1){
 //        	writer.close();

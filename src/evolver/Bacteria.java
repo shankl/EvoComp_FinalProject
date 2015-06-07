@@ -97,6 +97,10 @@ public class Bacteria {
     	}
     	return count;
 	}
+	
+	public int calcObjFit(){
+		return (int) Math.pow(1-costOfDeleteriousAllele, 1-getViability());
+	}
 
 	/* returns id */
 	public int getID() {
@@ -222,7 +226,8 @@ public class Bacteria {
     		for (int j = 0; j < genome.get(i).length; j++){
     			str += genome.get(i)[j];
     		}
+    		str += " ";
     	}
-    	return id + " " + str;
+    	return id + "\t|" + str;
     }
 }

@@ -7,6 +7,7 @@ public class Virus implements Comparable<Virus>{
 	private double costOfVirulence;
 	private double fitness;
 	private int id;
+	private double costOfDeleteriousAllele;
 	
 	/*
 	 * Genome layout:
@@ -23,9 +24,10 @@ public class Virus implements Comparable<Virus>{
 	
 	/* constructor */
 	public Virus(int interactionModel, int numResVirGenes,
-			double costOfVirulence,int numViabilityGenes, int serialID) {
+			double costOfVirulence,int numViabilityGenes, double costOfDeleteriousAllele, int serialID) {
 		
 		this.costOfVirulence = costOfVirulence;
+		this.costOfDeleteriousAllele = costOfDeleteriousAllele;
 		this.genome = new ArrayList<int[]>();
 		this.id = serialID;
 		
@@ -102,6 +104,18 @@ public class Virus implements Comparable<Virus>{
 	/* returns viabilityIndex */
 	public int getViabilityIndex() {
 		return viabilityIndex;
+	}
+	
+	public int getViability(){
+		int count = 0;
+    	for (int i = 0; i < genome.get(viabilityIndex).length; i ++){
+    		count += genome.get(viabilityIndex)[i];
+    	}
+    	return count;
+	}
+	
+	public int calcObjFit(){
+		return (int) Math.pow(1-costOfDeleteriousAllele, 1-getViability());
 	}
 	
 	/* returns virulence genes as int array */
@@ -185,7 +199,8 @@ public class Virus implements Comparable<Virus>{
     		for (int j = 0; j < genome.get(i).length; j++){
     			str += genome.get(i)[j];
     		}
+    		str += " ";
     	}
-    	return id + " " + str;
+    	return id + "\t|" + str;
     }
 }
