@@ -82,32 +82,33 @@ public class BacteriaPopulation {
 
 	
 	public void cull(int targetSize){
-		//this.shuffle(inds);
-       ArrayList<Bacteria> newPop = new ArrayList<Bacteria>();
-       double sumFit = 0;
-       for (Bacteria ind : inds) sumFit += ind.calcObjFit();
+		this.shuffle();
+		ArrayList<Bacteria> temp = new ArrayList<Bacteria>();
+		double sumFit = 0;
+		for (Bacteria ind : inds) sumFit += ind.calcObjFit();
 
-       // if all sharedFits are 0, just return without changing population
-       if (sumFit==0) return;
+		// if all fitnesses are 0, don't change population
+		if (sumFit==0) return;
 
-       double space = sumFit/popSize;
-       double curChoicePoint = space/2;
-       double curSumFit = 0;
-       int curPopIndex = -1;
-       int newPopIndex = 0;
+		// The gap is adjusted so the pop will be shrunken to targetSize
+		double gap = (sumFit/targetSize) * getPopSize();
+		double curPoint = gap/2;
+		double curSumFit = 0;
+		int curPopIndex = -1;
+		int tempIndex = 0;
 
-       while (newPopIndex < inds.size()) {
-           if (curSumFit >= curChoicePoint) {
-               newPop.set(newPopIndex, inds.get(curPopIndex));
-               newPopIndex++;
-               curChoicePoint += space;
-           }
-           else {
-               curPopIndex++;
-               curSumFit += inds.get(curPopIndex).calcObjFit();
-           }
-       }
-       inds = newPop;
+		while (tempIndex < inds.size()) {
+			if (curSumFit >= curPoint) {
+				temp.set(tempIndex, inds.get(curPopIndex));
+				tempIndex++;
+				curPoint += gap;
+			}
+			else {
+				curPopIndex++;
+				curSumFit += inds.get(curPopIndex).calcObjFit();
+			}
+		}
+		inds = temp;
 		
 	}
 }
