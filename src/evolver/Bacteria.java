@@ -176,7 +176,7 @@ public class Bacteria {
 			mutRate = 100*mutRate;
 		}
 
-		int[] seg1 = this.genome.get(intModelIndex);
+		int[] seg1 = this.genome.get(intModIndex);
 		int[] seg2 = this.genome.get(mutatorIndex);
 		int[] seg3 = this.genome.get(resistIndex);
 		int[] seg4 = this.genome.get(viabilityIndex);
@@ -184,7 +184,7 @@ public class Bacteria {
 		for (int i=0; i<seg1.length; i++) {
 			if (rgen.nextDouble() < mutRate) {
 				seg1[i] = rgen.nextInt(2);
-				this.genome.set(indModelIndex, seg1);
+				this.genome.set(intModIndex, seg1);
 			}
 		}
 

@@ -10,14 +10,14 @@ public class VirusPopulation {
 	private ArrayList<Virus> inds;
 	
 	/* constructor */
-	public VirusPopulation(int popSize, Random rgen, int interactionModel, int numResVirGenes, double costOfVirulence, int serialID) {
+	public VirusPopulation(int popSize, Random rgen, int interactionModel, int numResVirGenes, double costOfVirulence, int numViabilityGenes, int serialID) {
 		this.popSize = popSize;
 		this.rgen = rgen;
 		this.inds = new ArrayList<Virus>();
 		
 		// create initial population
 		for (int i=0; i<this.popSize; i++) {
-			inds.add(new Virus(interactionModel,numResVirGenes,costOfVirulence,serialID));
+			inds.add(new Virus(interactionModel,numResVirGenes,costOfVirulence, numViabilityGenes, serialID));
 			serialID++;
 		}
 	}

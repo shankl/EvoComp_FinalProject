@@ -17,7 +17,7 @@ public class CoEvoGA {
 	private BacteriaPopulation bacteriaPop;
 	private VirusPopulation newVirusPop;
 	private BacteriaPopulation newBacteriaPop;
-	private float sampleProportion = .2;
+	private double sampleProportion = .2;
 	private int nGens = -1;
 	private int interactionModel = -1;
 	private Random rgen;
@@ -42,7 +42,7 @@ public class CoEvoGA {
         rgen = new Random();
         
         // initialize populations
-        virusPop = new VirusPopulation(virusPopSize, rgen, interactionModel, numResVirGenes, costOfVirulence, serialID);
+        virusPop = new VirusPopulation(virusPopSize, rgen, interactionModel, numResVirGenes, costOfVirulence,numViabilityGenes, serialID);
         bacteriaPop = new BacteriaPopulation(bacteriaPopSize, rgen, interactionModel, numResVirGenes, numViabilityGenes, costOfResistance, costOfDeleteriousAlleles, serialID + virusPopSize);
     }
 	
@@ -232,8 +232,8 @@ public class CoEvoGA {
     	int numBacteriaOffspring = (int) (host.getFitness() * maxBacteriaChildren);
     	int numVirusOffspring = (int) (virus.getFitness() * maxVirusChildren);
     	
-    	Bacteria parentBacteria = bacteriaPop.remove(hostIndex);
-    	Virus parentVirus = virusPop.remove(virusIndex);
+//    	Bacteria parentBacteria = bacteriaPop.remove(hostIndex);
+//    	Virus parentVirus = virusPop.remove(virusIndex);
     	
     	for (int i=0; i<numBacteriaOffspring; i++) {
     		// need to implement this constructor in Bacteria

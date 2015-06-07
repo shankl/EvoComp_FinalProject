@@ -23,7 +23,7 @@ public class Virus implements Comparable<Virus>{
 	
 	/* constructor */
 	public Virus(int interactionModel, int numResVirGenes,
-			double costOfVirulence, int serialID) {
+			double costOfVirulence,int numViabilityGenes, int serialID) {
 		
 		this.costOfVirulence = costOfVirulence;
 		this.genome = new ArrayList<int[]>();
@@ -88,7 +88,7 @@ public class Virus implements Comparable<Virus>{
 	
 	/* returns interaction model */
 	public int getInteractionModel() {
-		return genome.get(intModeIndex)[0];
+		return genome.get(intModIndex)[0];
 	}
 	
 	/* returns intModIndex */
@@ -143,18 +143,16 @@ public class Virus implements Comparable<Virus>{
      * the chosen bit will not change value, so the expected genomic mutation rate is really 
      * (mutRate * genome length * .5) **/
 	public void mutate(double mutRate, Random rgen) {
-		if (hasMutator()) {
-			mutRate = 100*mutRate;
-		}
+		
 
-		int[] seg1 = this.genome.get(intModelIndex);
+		int[] seg1 = this.genome.get(intModIndex);
 		int[] seg2 = this.genome.get(virulenceIndex);
 		int[] seg3 = this.genome.get(viabilityIndex);
 
 		for (int i=0; i<seg1.length; i++) {
 			if (rgen.nextDouble() < mutRate) {
 				seg1[i] = rgen.nextInt(2);
-				this.genome.set(indModelIndex, seg1);
+				this.genome.set(intModIndex, seg1);
 			}
 		}
 
