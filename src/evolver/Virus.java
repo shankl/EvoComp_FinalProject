@@ -22,8 +22,6 @@ public class Virus implements Comparable<Virus>{
 	private int virulenceIndex = 1;
 	private int viabilityIndex = 2;
 	
-	//private Tree<Virus> familyTree;
-	
 	/* constructor */
 	public Virus(int interactionModel, int numResVirGenes,
 			double costOfVirulence,int numViabilityGenes, double costOfDeleteriousAllele, int serialID) {
@@ -76,18 +74,7 @@ public class Virus implements Comparable<Virus>{
 		this.id = serialID;
         this.parentID = copy.id;
 		this.fitness = copy.getFitness();
-		//this.familyTree = copy.getFamily();
-		//updateTree(copy);
 	}
-	/*
-	public void updateTree(Virus old) {
-		Tree<Virus> parent = new Tree<Virus>(old);
-	}
-	
-	public Tree<Virus> getFamily() {
-		return this.familyTree;
-	}
-	*/
 
 	/* returns the whole genome */
 	public ArrayList<int[]> getGenome() {
@@ -111,10 +98,13 @@ public class Virus implements Comparable<Virus>{
 	public int getViabilityIndex() {
 		return viabilityIndex;
 	}
-    public int getParentID(){
-        return parentID;
-    }
 	
+	/* returns parentID */
+    	public int getParentID(){
+        	return parentID;
+    	}
+	
+	/* returns viability as numOnes in viability section of genome */
 	public int getViability(){
 		int count = 0;
     	for (int i = 0; i < genome.get(viabilityIndex).length; i ++){
@@ -123,6 +113,7 @@ public class Virus implements Comparable<Virus>{
     	return count;
 	}
 
+	/* returns objective fitness */
 	public double calcObjFit(){
         int numDeleterious = genome.get(viabilityIndex).length - getViability();
         double objFit = Math.pow(1-costOfDeleteriousAllele, numDeleterious);
