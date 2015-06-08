@@ -10,7 +10,6 @@ public class Virus implements Comparable<Virus>{
     private int parentID;
 	private double costOfDeleteriousAllele;
 	private Random rgen = new Random();
-	private boolean mutated = false;
 	
 	/*
 	 * Genome layout:
@@ -171,13 +170,7 @@ public class Virus implements Comparable<Virus>{
 		int[] seg2 = this.genome.get(virulenceIndex);
 		int[] seg3 = this.genome.get(viabilityIndex);
 
-//		for (int i=0; i<seg1.length; i++) {
-//			if (rgen.nextDouble() < mutRate) {
-//				seg1[i] = rgen.nextInt(2);
-//				this.genome.set(intModIndex, seg1);
-//			}
-//		}
-
+		// mutates segment 2
 		for (int i=0; i<seg2.length; i++) {
 			if (rgen.nextDouble() < mutRate) {
 				seg2[i] = rgen.nextInt(2);
@@ -186,6 +179,7 @@ public class Virus implements Comparable<Virus>{
 			}
 		}
 
+		// mutates segement 3
 		for (int i=0; i<seg3.length; i++) {
 			if (rgen.nextDouble() < mutRate) {
 				seg3[i] = rgen.nextInt(2);
@@ -194,6 +188,8 @@ public class Virus implements Comparable<Virus>{
 
 			}
 		}
+		
+		// gives it a new ID if mutates, otherwise it stays the same as its parent's
 		if (mutated){
 			this.id = serialID;
 		}

@@ -3,7 +3,6 @@ package evolver;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Random;
 
 public class VirusPopulation {
 	private int popSize;
@@ -53,7 +52,7 @@ public class VirusPopulation {
         inds = newPop;
     }
 
-
+	// cuts the population size down to the target Size using fitness proportional selection
 	public void cull(int targetSize){
 		this.shuffle();
 		ArrayList<Virus> temp = new ArrayList<Virus>();

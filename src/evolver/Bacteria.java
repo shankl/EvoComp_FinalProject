@@ -67,6 +67,7 @@ public class Bacteria {
     	fitness = calcObjFit();
 	}
 
+	// constructor for children
 	public Bacteria(Bacteria copy) {
 		this.genome = copy.getGenome();
         this.costOfDeleteriousAllele = copy.costOfDeleteriousAllele;
@@ -91,6 +92,7 @@ public class Bacteria {
 		return genome.get(mutatorIndex);
 	}
 
+	// returns if it has the mutator allele
 	public boolean hasMutator() {
 		return getMutator()[0] == 1;
 	}
@@ -114,6 +116,7 @@ public class Bacteria {
     	return count;
 	}
 	
+	// calculates fitness that  is not reliant on an infection by a virus
 	public double calcObjFit(){
         int numDeleterious = genome.get(viabilityIndex).length - getViability();
         double objFit = Math.pow(1-costOfDeleteriousAllele, numDeleterious);
@@ -185,6 +188,7 @@ public class Bacteria {
     	fit = fit*Math.pow(1-this.costOfDeleteriousAllele, delet);
     	this.fitness = fit;
 	}
+	
 	public void setFit(double fit) {
 		this.fitness = fit;
 	}
@@ -206,13 +210,7 @@ public class Bacteria {
 		int[] seg3 = this.genome.get(resistIndex);
 		int[] seg4 = this.genome.get(viabilityIndex);
 
-//		for (int i=0; i<seg1.length; i++) {
-//			if (rgen.nextDouble() < mutRate) {
-//				seg1[i] = rgen.nextInt(2);
-//				this.genome.set(intModIndex, seg1);
-//			}
-//		}
-
+		// mutates segment 2
 		for (int i=0; i<seg2.length; i++) {
 			if (rgen.nextDouble() < mutRate) {
 				seg2[i] = rgen.nextInt(2);
@@ -222,6 +220,7 @@ public class Bacteria {
 			}
 		}
 
+		// mutates segment 3
 		for (int i=0; i<seg3.length; i++) {
 			if (rgen.nextDouble() < mutRate) {
 				seg3[i] = rgen.nextInt(2);
@@ -231,6 +230,7 @@ public class Bacteria {
 			}
 		}
 
+		//mutates segment 4
 		for (int i=0; i<seg4.length; i++) {
 			if (rgen.nextDouble() < mutRate) {
 				seg4[i] = rgen.nextInt(2);
@@ -240,6 +240,7 @@ public class Bacteria {
 			}
 		}
 		
+		// gives it a new ID if it has been mutated, otherwise it stays the same as the parent ID
 		if (mutated){
 			this.id = serialID;
 		}

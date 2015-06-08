@@ -1,7 +1,6 @@
 package evolver;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -9,7 +8,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
@@ -18,9 +16,6 @@ import com.opencsv.CSVWriter;
 public class CoEvoGA {
 	private VirusPopulation virusPop;
 	private BacteriaPopulation bacteriaPop;
-	private VirusPopulation newVirusPop;
-	private BacteriaPopulation newBacteriaPop;
-	private double sampleProportion = .2;
 	private int nGens = -1;
 	private int interactionModel = -1;
 	private Random rgen;
@@ -315,8 +310,8 @@ public class CoEvoGA {
     		}
     	}
     	
-    	System.out.println("Most Children \nBacteria: " + bactParents.getGenomeString(highestIndB) + " with " +
-    	 highestValB + " children\nViruses: " + virusParents.getGenomeString(highestIndV) + " with " + highestValV + " children");
+    	System.out.println("Most Clones \nBacteria: " + bactParents.getGenomeString(highestIndB) + " with " +
+    	 highestValB + " clones\nViruses: " + virusParents.getGenomeString(highestIndV) + " with " + highestValV + " clones");
     }
     
 	public static void main(String[] args) throws IOException {
