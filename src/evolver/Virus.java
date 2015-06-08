@@ -74,7 +74,7 @@ public class Virus implements Comparable<Virus>{
         this.costOfVirulence = copy.costOfVirulence;
 		this.id = serialID;
         this.parentID = copy.id;
-		this.fitness = copy.getFitness();
+		this.fitness = 0.0;
 	}
 
 	/* returns the whole genome */
@@ -114,12 +114,12 @@ public class Virus implements Comparable<Virus>{
     	return count;
 	}
 
-	/* returns objective fitness */
-	public double calcObjFit(){
-        int numDeleterious = genome.get(viabilityIndex).length - getViability();
-        double objFit = Math.pow(1-costOfDeleteriousAllele, numDeleterious);
-        return  objFit;	}
-	
+//	/* returns objective fitness */
+//	public double calcObjFit(){
+//        int numDeleterious = genome.get(viabilityIndex).length - getViability();
+//        double objFit = Math.pow(1-costOfDeleteriousAllele, numDeleterious);
+//        return  objFit;	}
+//	
 	/* returns virulence genes as int array */
 	public int[] getVirulenceGenes() {
 		return genome.get(virulenceIndex);
@@ -150,8 +150,8 @@ public class Virus implements Comparable<Virus>{
 			fit += getVirulenceGenes()[i];
 		}
 		
-		fit = Math.pow(1.0-costOfVirulence*getInteractionModel(), 0);
-		this.fitness = fit;
+		fit = Math.pow(1.0-costOfVirulence*getInteractionModel(), fit);
+		this.fitness = this.fitness + fit;
 	}
 	
 	/** uniform mutation, each bit in the genome has a mutRate probability of being chosen to mutate,

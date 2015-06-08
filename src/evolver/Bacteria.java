@@ -64,7 +64,7 @@ public class Bacteria {
     	genome.add(viabilityGene);
 
     	// initial fitness
-    	fitness = calcObjFit();
+    	fitness = 0.0;
 	}
 
 	public Bacteria(Bacteria copy, int serialID) {
@@ -73,7 +73,7 @@ public class Bacteria {
         this.costOfResistance = copy.costOfResistance;
         this.parentID = copy.getID();
 		this.id = serialID;
-		this.fitness = copy.getFitness();
+		this.fitness = 0.0;
 	}
 	
 	/* returns the whole genome */
@@ -114,11 +114,11 @@ public class Bacteria {
     	return count;
 	}
 	
-	public double calcObjFit(){
-        int numDeleterious = genome.get(viabilityIndex).length - getViability();
-        double objFit = Math.pow(1-costOfDeleteriousAllele, numDeleterious);
-        return  objFit;
-	}
+//	public double calcObjFit(){
+//        int numDeleterious = genome.get(viabilityIndex).length - getViability();
+//        double objFit = Math.pow(1-costOfDeleteriousAllele, numDeleterious);
+//        return  objFit;
+//	}
 
 	/* returns id */
 	public int getID() {
@@ -153,14 +153,12 @@ public class Bacteria {
 
 
 	/* reset fitness to objective fitness. If it interacts with a virus this will get overwritten with the new fitness */
-	public void resetFitness() {
-		fitness = calcObjFit();
-	}
+//	public void resetFitness() {
+//		fitness = calcObjFit();
+//	}
 
 	/* fitness for bacteria affected by one virus (viruses are cumulative) */
 	public void evalFitness(Virus virus) {
-		this.resetFitness();
-		virus.evalFitness();
 		int resist = 0;
 		int delet = 0;
 
@@ -183,10 +181,7 @@ public class Bacteria {
 
     	double fit = Math.pow(1-this.costOfResistance*getInteractionModel(),resist)*(1-virus.getFitness()*vir);
     	fit = fit*Math.pow(1-this.costOfDeleteriousAllele, delet);
-    	this.fitness = fit;
-	}
-	public void setFit(double fit) {
-		this.fitness = fit;
+    	this.fitness = this.fitness + fit;
 	}
 
 	/** uniform mutation, each bit in the genome has a mutRate probability of being chosen to mutate,

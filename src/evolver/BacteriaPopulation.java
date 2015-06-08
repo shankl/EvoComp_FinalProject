@@ -98,7 +98,7 @@ public class BacteriaPopulation {
 		this.shuffle();
 		ArrayList<Bacteria> temp = new ArrayList<Bacteria>();
 		double sumFit = 0;
-		for (Bacteria ind : inds) sumFit += ind.calcObjFit();
+		for (Bacteria ind : inds) sumFit += ind.getFitness();
 
 		// if all fitnesses are 0, don't change population
 		if (sumFit==0) return;
@@ -120,7 +120,7 @@ public class BacteriaPopulation {
 			}
 			else {
 				curPopIndex++;
-				curSumFit += inds.get(curPopIndex).calcObjFit();
+				curSumFit += inds.get(curPopIndex).getFitness();
 			}
 		}
 		inds = temp;

@@ -138,97 +138,77 @@ public class CoEvoGA {
         virusPop.printAll();
     }
     
-    /* models the bacteria interacting with the viruses 
-     * takes 1/10 of bacteria population and exposes them to the viruses */
+    /* models the bacteria interacting with the viruses, calculates fitnesses */
     public void interact() {
-    	// sample the bacteria
-    	bacteriaPop.shuffle();
-    	
-    	Virus infector = null;
-    	int infectorIndex = -1;
+    	// calculate virus fitnesses
     	for (int i=0; i < bacteriaPop.getPopSize(); i++) {
     		Bacteria host = bacteriaPop.getAtIndex(i);
-    		switch(host.getInteractionModel()) {
-    		case 0:
-    			infectorIndex = matchingAllele(host);
-    			break;
-    		
-    		case 1:
-    			infectorIndex = geneForGene(host);
-    			break;
-    		
-    		default:
-    			System.out.println("Error: unrecognized interaction model " + bacteriaPop.getAtIndex(i).getInteractionModel());
-    			System.exit(1);
-    			break;
+    		if (host.getInteractionModel() == 0) {
+    			for (int j = 0; j < virusPop.getPopSize(); j++) {
+    				if (matchingAllele(host, virusPop.getAtIndex(j))) {
+    					virusPop.getAtIndex(j).evalFitness();
+    				}
+    			}
+    		} else {
+    			for (int j = 0; j < virusPop.getPopSize(); j++) {
+    				if (geneForGene(host, virusPop.getAtIndex(j))) {
+    					virusPop.getAtIndex(j).evalFitness();
+    				}
+    			}
     		}
-    		
-    		if (infectorIndex > -1) {
-    			genVirusOffspring(i, infectorIndex);
-    		} 
     	}
-        genBacteriaOffspring();
+    	// calculate bacteria fitnesses (depend on virus fitnesses)
+    	for (int i=0; i < bacteriaPop.getPopSize(); i++) {
+    		Bacteria host = bacteriaPop.getAtIndex(i);
+    		if (host.getInteractionModel() == 0) {
+    			for (int j = 0; j < virusPop.getPopSize(); j++) {
+    				if (matchingAllele(host, virusPop.getAtIndex(j))) {
+    					host.evalFitness(virusPop.getAtIndex(j));
+    				}
+    			}
+    		} else {
+    			for (int j = 0; j < virusPop.getPopSize(); j++) {
+    				if (geneForGene(host, virusPop.getAtIndex(j))) {
+    					host.evalFitness(virusPop.getAtIndex(j));
+    				}
+    			}
+    		}
+    	}
     }
     
-    /* 
-     * TODO add viability to virus
-     */
 	/** Matching allele interaction model
 	*  infects a bacterium with the first virus it encounters that can infect it
 	*  Virus can infect the host if it can match the host's resistance genes and go undetected */
-    public int matchingAllele(Bacteria bacteria) {
+    public boolean matchingAllele(Bacteria bacteria, Virus virus) {
     	int[] resistGenes = bacteria.getResistAlleles();
     	boolean canInfect = false;
-    	int i = 0;
-    	while (!canInfect && i < virusPop.getPopSize()) {
-    		int[] virulenceGenes = virusPop.getAtIndex(i).getVirulenceGenes();
+    	int[] virulenceGenes = virus.getVirulenceGenes();
     		
-			// evaluate whether a virus can infect the bacteria- can't if 
-			// it doesn't match at every index
-    		if (Arrays.equals(resistGenes, virulenceGenes)) {
-    			canInfect = true;
-    			i--;
-    		}
-    		i++;
+		// evaluate whether a virus can infect the bacteria- can't if 
+		// it doesn't match at every index
+    	if (Arrays.equals(resistGenes, virulenceGenes)) {
+    		canInfect = true;
     	}
-    	if (i < virusPop.getPopSize()) {
-    		return i;
-    	}  	
-    	// if no viruses matched, return null
-    	return -1;
+    	return canInfect;
     }
     
     // Gene for Gene interaction model
  	// infects a bacterium with the first virus it encounters that can infect it
  	// Virus can infect a host if it has a virulence gene that the host does not have a resistance gene for
-    public int geneForGene(Bacteria bacteria) {
+    public boolean geneForGene(Bacteria bacteria, Virus virus) {
     	int[] resistGenes = bacteria.getResistAlleles();
     	boolean canInfect = false;
-    	double hostFit = 0;
-    	int numInfect = 0;
-    	int i = 0;
-    	while (!canInfect && i < virusPop.getPopSize()) {
-    		int[] virulence = virusPop.getAtIndex(i).getVirulenceGenes();
-    		// evaluate whether the virus can infect the bacteria
-    		int j = 0;
-    		while (j < numResVirGenes) {
-    			if (virulence[j] > resistGenes[j]) {
-    				canInfect = true;
-    				bacteria.evalFitness(virusPop.getAtIndex(i));
-    				hostFit += bacteria.getFitness();
-    				numInfect++;
+    	int[] virulence = virus.getVirulenceGenes();
+    	// evaluate whether the virus can infect the bacteria
+    	int j = 0;
+    	while (j < numResVirGenes) {
+    		if (virulence[j] > resistGenes[j]) {
+    			canInfect = true;
     				break;
     			}
     			j++;
-    		}
-    		i++;
     	}
-    	bacteria.setFit(hostFit/numInfect);
-    	if (i < virusPop.getPopSize()) {
-    		return i;
-    	}
-    	// if no viruses matched, return null
-    	return -1;
+    	return canInfect;
     }
     
     public void genVirusOffspring(int hostIndex, int virusIndex) {
@@ -267,7 +247,7 @@ public class CoEvoGA {
         for (int i = 0; i < bacteriaPop.getPopSize(); i++) {
             Bacteria parentBacteria = bacteriaPop.remove(i);
             // Have to use objective (viability based) fitness because these have not interacted with viruses
-            int numBacteriaOffspring = (int) (parentBacteria.calcObjFit() * maxBacteriaChildren);
+            int numBacteriaOffspring = (int) (parentBacteria.getFitness() * maxBacteriaChildren);
 
             for (int j = 0; j < numBacteriaOffspring; j++) {
 
@@ -299,12 +279,16 @@ public class CoEvoGA {
         // stop at given # gens (read in CoEvo constructor from vars file)
         int nGens = EA.getNumGens();
         int gens = 0;
+        // calc init fitnesses
         while (gens<nGens) {
             gens++;
             
             // Interact the viruses and bacteria. When this is done, the population will be 
     		// mutated offspring
             EA.interact();
+        	EA.genVirusOffspring();
+            EA.genBacteriaOffspring();
+            //calc child fitnesses
             if (EA.virusPop.getPopSize() > EA.virusPopSize * EA.kRatio || EA.bacteriaPop.getPopSize() > EA.bacteriaPopSize * EA.kRatio){
                 EA.cull();
             }
