@@ -65,7 +65,7 @@ public class Virus implements Comparable<Virus>{
 	    return Integer.compare(this.id, other.id);
 	}
 	
-	// not yet working
+	// works, but completely ignores trees
 	
 	public Virus(Virus copy, int serialID) {
 		this.genome = copy.getGenome();

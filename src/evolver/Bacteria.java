@@ -65,6 +65,17 @@ public class Bacteria {
     	fitness = 0.0;
 	}
 
+	public Bacteria(Bacteria copy, int serialID) {
+		this.genome = copy.getGenome();
+		this.id = serialID;
+		this.fitness = copy.getFitness();
+	}
+	
+	/* returns the whole genome */
+	public ArrayList<int[]> getGenome() {
+		return this.genome;
+	}
+	
 	/* returns interaction model */
 	public int getInteractionModel() {
 		return genome.get(intModIndex)[0];

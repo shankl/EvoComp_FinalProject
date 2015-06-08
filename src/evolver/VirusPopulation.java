@@ -6,13 +6,11 @@ import java.util.Random;
 
 public class VirusPopulation {
 	private int popSize;
-	private Random rgen;
 	private ArrayList<Virus> inds;
 	
 	/* constructor */
-	public VirusPopulation(int popSize, Random rgen, int interactionModel, int numResVirGenes, double costOfVirulence, int numViabilityGenes, double costOfDeleteriousAllele, int serialID) {
+	public VirusPopulation(int popSize, int interactionModel, int numResVirGenes, double costOfVirulence, int numViabilityGenes, double costOfDeleteriousAllele, int serialID) {
 		this.popSize = popSize;
-		this.rgen = rgen;
 		this.inds = new ArrayList<Virus>();
 		
 		// create initial population
@@ -24,12 +22,14 @@ public class VirusPopulation {
 	/* adds an individual to the population */
 	public void add( Virus child) {
 		inds.add(child);
+		popSize++;
 	}
 	
 	/* removes an individual from the population */
 	public Virus remove(int parentIndex) {
 		Virus parent = inds.get(parentIndex);
 		inds.remove(parentIndex);
+		popSize--;
 		return parent;
 	}
 	

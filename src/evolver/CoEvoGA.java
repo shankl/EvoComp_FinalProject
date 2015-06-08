@@ -42,8 +42,8 @@ public class CoEvoGA {
         rgen = new Random();
         
         // initialize populations
-        virusPop = new VirusPopulation(virusPopSize, rgen, interactionModel, numResVirGenes, costOfVirulence, numViabilityGenes, costOfDeleteriousAlleles, serialID);
-        bacteriaPop = new BacteriaPopulation(bacteriaPopSize, rgen, interactionModel, numResVirGenes, numViabilityGenes, costOfResistance, costOfDeleteriousAlleles, serialID + virusPopSize);
+        virusPop = new VirusPopulation(virusPopSize, interactionModel, numResVirGenes, costOfVirulence, numViabilityGenes, costOfDeleteriousAlleles, serialID);
+        bacteriaPop = new BacteriaPopulation(bacteriaPopSize, interactionModel, numResVirGenes, numViabilityGenes, costOfResistance, costOfDeleteriousAlleles, serialID + virusPopSize);
     }
 	
 	/** read all needed variables from file vars.txt so can change them without
@@ -234,21 +234,19 @@ public class CoEvoGA {
     	int numBacteriaOffspring = (int) (host.getFitness() * maxBacteriaChildren);
     	int numVirusOffspring = (int) (virus.getFitness() * maxVirusChildren);
     	
-//    	Bacteria parentBacteria = bacteriaPop.remove(hostIndex);
+    	Bacteria parentBacteria = bacteriaPop.remove(hostIndex);
     	Virus parentVirus = virusPop.remove(virusIndex);
     	
     	for (int i=0; i<numBacteriaOffspring; i++) {
-    		// need to implement this constructor in Bacteria
-    		/*
-    		Bacteria child = new Bacteria(parentBacteria);
-    		child.mutate();
+
+    		Bacteria child = new Bacteria(parentBacteria, 0);
+    		child.mutate(mutRate);
     		bacteriaPop.add(child);
-    		*/
+    		
     	}
     	
     	for (int j=0; j<numVirusOffspring; j++) {
-    		// need to implement this constructor in Virus
-    		
+
     		Virus child = new Virus(parentVirus, 0);
     		child.mutate(mutRate);
     		virusPop.add(child);
@@ -297,7 +295,8 @@ public class CoEvoGA {
             //EA.mutate();
             
             // print population stats to csv--- probably want frequencies over time?
-            
+            System.out.println(EA.virusPop.getPopSize());
+            System.out.println(EA.bacteriaPop.getPopSize());
             if (EA.virusPop.getPopSize() > EA.virusPopSize * EA.kRatio || EA.bacteriaPop.getPopSize() > EA.bacteriaPopSize * EA.kRatio){
                 EA.cull();
             }

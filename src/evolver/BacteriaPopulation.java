@@ -6,16 +6,14 @@ import java.util.Random;
 
 public class BacteriaPopulation {
 	private int popSize;
-	private Random rgen;
 	private ArrayList<Bacteria> inds;
 
 	/* constructor */
-	public BacteriaPopulation(int popSize, Random rgen, int interactionModel,
+	public BacteriaPopulation(int popSize, int interactionModel,
 			int numResVirGenes, int numViabilityGenes, double costOfResistance,
 			double costOfDeleteriousAllele, int serialID) {
 
 		this.popSize = popSize;
-		this.rgen = rgen;
 		this.inds = new ArrayList<Bacteria>();
 
 		// create initial population
@@ -35,10 +33,18 @@ public class BacteriaPopulation {
 		return this.inds.get(i);
 	}
 
+	/* adds an individual to the population */
+	public void add( Bacteria child) {
+		inds.add(child);
+		popSize++;
+	}
+	
 	/* removes Bacteria at index i from population and returns it */
-	public void removeAtIndex(int i) {
+	public Bacteria remove(int i) {
+		Bacteria parent = getAtIndex(i);
 		this.inds.remove(i);
 		popSize--;
+		return parent;
 	}
 
 	/* shuffles population so the order is random */
