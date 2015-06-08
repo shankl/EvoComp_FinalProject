@@ -78,7 +78,7 @@ public class Bacteria {
 	
 	/* returns the whole genome */
 	public ArrayList<int[]> getGenome() {
-		return this.genome;
+		return new ArrayList<int[]>( genome);
 	}
 	
 	/* returns interaction model */

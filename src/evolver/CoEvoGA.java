@@ -218,6 +218,7 @@ public class CoEvoGA {
     				bacteria.evalFitness(virusPop.getAtIndex(i));
     				hostFit += bacteria.getFitness();
     				numInfect++;
+    				break;
     			}
     			j++;
     		}
@@ -227,6 +228,7 @@ public class CoEvoGA {
     	if (i < virusPop.getPopSize()) {
     		return i;
     	}
+
     	
     	// if no viruses matched, return null
     	return -1;
@@ -245,6 +247,7 @@ public class CoEvoGA {
 
         //the number of children is proportional to the fitness of an individual
     	int numVirusOffspring = (int) (virus.getFitness() * maxVirusChildren);
+    	System.out.println(numVirusOffspring);
 
         // Kill the parents
     	if (host.getFitness() < 0.5) {bacteriaPop.remove(hostIndex);}
@@ -272,6 +275,7 @@ public class CoEvoGA {
             Bacteria parentBacteria = bacteriaPop.remove(i);
             // Have to use objective (viability based) fitness because these have not interacted with viruses
             int numBacteriaOffspring = (int) (parentBacteria.calcObjFit() * maxBacteriaChildren);
+        	System.out.println(numBacteriaOffspring);
 
             for (int j = 0; j < numBacteriaOffspring; j++) {
 
@@ -289,8 +293,8 @@ public class CoEvoGA {
     }
     
     public void cull(){
-    	virusPop.cull((int)(virusPopSize*kRatio));
-    	bacteriaPop.cull((int)(bacteriaPopSize* kRatio));
+    	virusPop.cull((int)(virusPopSize));
+    	bacteriaPop.cull((int)(bacteriaPopSize));
     }
     
 	public static void main(String[] args) throws IOException {
@@ -326,8 +330,7 @@ public class CoEvoGA {
             	writer.writeNext(dataRow);
             }
             System.out.println("gen: " + gens + "\t Bacteria popsize: " + EA.bacteriaPop.getPopSize() + "\t Proportion Mutator: " + propMut + "\t Virus Popsize: " + EA.virusPop.getPopSize());
-        }
-        
+        }        
         writer.close();
         EA.printPopulations();
         System.out.println("Done");

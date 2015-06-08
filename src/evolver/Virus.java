@@ -10,6 +10,7 @@ public class Virus implements Comparable<Virus>{
     private int parentID;
 	private double costOfDeleteriousAllele;
 	private Random rgen = new Random();
+	private boolean mutated = false;
 	
 	/*
 	 * Genome layout:
@@ -78,7 +79,7 @@ public class Virus implements Comparable<Virus>{
 
 	/* returns the whole genome */
 	public ArrayList<int[]> getGenome() {
-		return this.genome;
+		return new ArrayList<int[]>(genome);
 	}
 	
 	/* returns interaction model */
