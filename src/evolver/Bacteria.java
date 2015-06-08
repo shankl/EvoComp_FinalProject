@@ -8,6 +8,7 @@ public class Bacteria {
 	private double costOfDeleteriousAllele;
 	private double fitness;
 	private int id;
+    private int parentID;
 	private Random rgen = new Random();
 	
 	/*
@@ -32,6 +33,7 @@ public class Bacteria {
 		this.costOfDeleteriousAllele = costOfDeleteriousAllele;
 		this.genome = new ArrayList<int[]>();
 		this.id = serialID;
+        this.parentID = 0;
 
     	// adds interactionModel (1: gene-for-gene model)
     	int[] interactionModelGene = new int[1];
@@ -62,11 +64,14 @@ public class Bacteria {
     	genome.add(viabilityGene);
 
     	// initial fitness
-    	fitness = 0.0;
+    	fitness = calcObjFit();
 	}
 
 	public Bacteria(Bacteria copy, int serialID) {
 		this.genome = copy.getGenome();
+        this.costOfDeleteriousAllele = copy.costOfDeleteriousAllele;
+        this.costOfResistance = copy.costOfResistance;
+        this.parentID = copy.getID();
 		this.id = serialID;
 		this.fitness = copy.getFitness();
 	}
@@ -109,8 +114,10 @@ public class Bacteria {
     	return count;
 	}
 	
-	public int calcObjFit(){
-		return (int) Math.pow(1-costOfDeleteriousAllele, 1-getViability());
+	public double calcObjFit(){
+        int numDeleterious = genome.get(viabilityIndex).length - getViability();
+        double objFit = Math.pow(1-costOfDeleteriousAllele, numDeleterious);
+        return  objFit;
 	}
 
 	/* returns id */
@@ -139,18 +146,15 @@ public class Bacteria {
 	public int getViabilityIndex() {
 		return viabilityIndex;
 	}
+    public int getParentID(){
+        return parentID;
+    }
 	
 
-	/** if scale is valid (>1) fitness = scale^fitness **/
-	public double getModFitness(double scale) {
-	       double modfit = this.getFitness();
-	       if (scale > 1) modfit = Math.pow(scale, modfit);
-	       return modfit;
-	}
 
-	/* reset fitness to 0.0 */
+	/* reset fitness to objective fitness. If it interacts with a virus this will get overwritten with the new fitness */
 	public void resetFitness() {
-		fitness = 0.0;
+		fitness = calcObjFit();
 	}
 
 	/* fitness for bacteria affected by one virus (viruses are cumulative) */
@@ -239,6 +243,6 @@ public class Bacteria {
     		}
     		str += " ";
     	}
-    	return id + "\t|" + str;
+    	return parentID + "\t|" + id + "\t|" + str;
     }
 }

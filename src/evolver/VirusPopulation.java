@@ -2,6 +2,7 @@ package evolver;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 
 public class VirusPopulation {
@@ -9,14 +10,13 @@ public class VirusPopulation {
 	private ArrayList<Virus> inds;
 	
 	/* constructor */
-	public VirusPopulation(int popSize, int interactionModel, int numResVirGenes, double costOfVirulence, int numViabilityGenes, double costOfDeleteriousAllele, int serialID) {
+	public VirusPopulation(int popSize, int interactionModel, int numResVirGenes, double costOfVirulence, int numViabilityGenes, double costOfDeleteriousAllele, CoEvoGA ev) {
 		this.popSize = popSize;
 		this.inds = new ArrayList<Virus>();
 		
 		// create initial population
 		for (int i=0; i<this.popSize; i++) {
-			inds.add(new Virus(interactionModel,numResVirGenes,costOfVirulence, numViabilityGenes, costOfDeleteriousAllele, serialID));
-			serialID++;
+			inds.add(new Virus(interactionModel,numResVirGenes,costOfVirulence, numViabilityGenes, costOfDeleteriousAllele, ev.nextSerialID()));
 		}
 	}
 	/* adds an individual to the population */
@@ -32,7 +32,8 @@ public class VirusPopulation {
 		popSize--;
 		return parent;
 	}
-	
+
+
 	/* returns popSize */
 	public int getPopSize() {
 		return this.inds.size();
@@ -47,6 +48,10 @@ public class VirusPopulation {
 	public void shuffle() {
 		Collections.shuffle(inds);
 	}
+
+    public void setPop(ArrayList<Virus> newPop){
+        inds = newPop;
+    }
 
 	/* mutates all individuals in the population */
 	public void mutate(double mutRate) {
@@ -64,14 +69,17 @@ public class VirusPopulation {
 		if (sumFit==0) return;
 
 		// The gap is adjusted so the pop will be shrunken to targetSize
-		double gap = (sumFit/targetSize) * getPopSize();
+		double gap = (double) sumFit /  targetSize;
 		double curPoint = gap/2;
 		double curSumFit = 0;
 		int curPopIndex = -1;
 		int tempIndex = 0;
-		while (tempIndex < inds.size()) {
+		while (curPopIndex + 1 < inds.size()) {
+
+
+//            System.out.println(getPopSize() + " " + tempIndex + " " + curPopIndex);
 			if (curSumFit >= curPoint) {
-				temp.set(tempIndex, inds.get(curPopIndex));
+				temp.add(tempIndex, inds.get(curPopIndex));
 				tempIndex++;
 				curPoint += gap;
 			}
@@ -87,8 +95,19 @@ public class VirusPopulation {
 	/* prints all individuals in the population */
 	public void printAll() {
 		System.out.println("Virus population:");
-        for (int i=0; i<popSize; i++) {
-            inds.get(i).print();
+        // Sort them by parent for ease of analysis
+        // copy it so that we don't mess with the actual pop
+        ArrayList<Virus> temp = (ArrayList<Virus>) inds.clone();
+        Collections.sort(temp, new Comparator<Virus>() {
+            @Override
+            public int compare(Virus o1, Virus o2) {
+                if (o1.getParentID() > o2.getParentID()) return 1;
+                else if (o1.getParentID() == o2.getParentID()) return 0;
+                else return -1;
+            }
+        });
+        for (int i=0; i < getPopSize(); i++) {
+            temp.get(i).print();
         }
         System.out.println();
 	}

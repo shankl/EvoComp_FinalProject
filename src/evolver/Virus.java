@@ -7,6 +7,7 @@ public class Virus implements Comparable<Virus>{
 	private double costOfVirulence;
 	private double fitness;
 	private int id;
+    private int parentID;
 	private double costOfDeleteriousAllele;
 	private Random rgen = new Random();
 	
@@ -31,6 +32,7 @@ public class Virus implements Comparable<Virus>{
 		this.costOfDeleteriousAllele = costOfDeleteriousAllele;
 		this.genome = new ArrayList<int[]>();
 		this.id = serialID;
+        this.parentID = 0;
 		
 		// add interactionModel allele (1: gene-for-gene)
     	int[] interactionModelGene = new int[1];
@@ -69,7 +71,10 @@ public class Virus implements Comparable<Virus>{
 	
 	public Virus(Virus copy, int serialID) {
 		this.genome = copy.getGenome();
+        this.costOfDeleteriousAllele = copy.costOfDeleteriousAllele;
+        this.costOfVirulence = copy.costOfVirulence;
 		this.id = serialID;
+        this.parentID = copy.id;
 		this.fitness = copy.getFitness();
 		//this.familyTree = copy.getFamily();
 		//updateTree(copy);
@@ -106,6 +111,9 @@ public class Virus implements Comparable<Virus>{
 	public int getViabilityIndex() {
 		return viabilityIndex;
 	}
+    public int getParentID(){
+        return parentID;
+    }
 	
 	public int getViability(){
 		int count = 0;
@@ -114,10 +122,11 @@ public class Virus implements Comparable<Virus>{
     	}
     	return count;
 	}
-	
-	public int calcObjFit(){
-		return (int) Math.pow(1-costOfDeleteriousAllele, 1-getViability());
-	}
+
+	public double calcObjFit(){
+        int numDeleterious = genome.get(viabilityIndex).length - getViability();
+        double objFit = Math.pow(1-costOfDeleteriousAllele, numDeleterious);
+        return  objFit;	}
 	
 	/* returns virulence genes as int array */
 	public int[] getVirulenceGenes() {
@@ -202,6 +211,6 @@ public class Virus implements Comparable<Virus>{
     		}
     		str += " ";
     	}
-    	return id + "\t|" + str;
+    	return parentID + "\t|" + id + "\t|" + str;
     }
 }

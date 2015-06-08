@@ -24,9 +24,9 @@ mutRate: .01
 interactionModel: 0	
 
 # Costs of various traits
-costOfVirulence: 0
-costOfResistance: 0
-costOfDeleteriousAlleles: 0
+costOfVirulence: .5
+costOfResistance: .5
+costOfDeleteriousAlleles: .5
 
 # Number of certain genes
 # Default 10 viability, 5 Resistance/Virulence

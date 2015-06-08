@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -34,16 +35,17 @@ public class CoEvoGA {
 	private int maxBacteriaChildren = -1;
 	private int genCSV = -1;
 	private int printDebug = -1;
-	
-	/** Set up EA with one virus population and one bacteria population **/
+    private int serialID = 0;
+
+
+    /** Set up EA with one virus population and one bacteria population **/
     public CoEvoGA() throws IOException {
         readVars();
-        int serialID = 0;
         rgen = new Random();
         
         // initialize populations
-        virusPop = new VirusPopulation(virusPopSize, interactionModel, numResVirGenes, costOfVirulence, numViabilityGenes, costOfDeleteriousAlleles, serialID);
-        bacteriaPop = new BacteriaPopulation(bacteriaPopSize, interactionModel, numResVirGenes, numViabilityGenes, costOfResistance, costOfDeleteriousAlleles, serialID + virusPopSize);
+        virusPop = new VirusPopulation(virusPopSize, interactionModel, numResVirGenes, costOfVirulence, numViabilityGenes, costOfDeleteriousAlleles, this);
+        bacteriaPop = new BacteriaPopulation(bacteriaPopSize, interactionModel, numResVirGenes, numViabilityGenes, costOfResistance, costOfDeleteriousAlleles, this);
     }
 	
 	/** read all needed variables from file vars.txt so can change them without
@@ -121,6 +123,12 @@ public class CoEvoGA {
     public int getNumGens() {
         return nGens;
     }
+
+    public int nextSerialID() {
+        serialID ++;
+        return serialID;
+    }
+
     
     /** print all individuals in each pop **/
     public void printPopulations() {
@@ -157,9 +165,11 @@ public class CoEvoGA {
     		}
     		
     		if (infectorIndex > -1) {
-    			genOffspring(i,infectorIndex);
+    			genVirusOffspring(i, infectorIndex);
     		} 
     	}
+
+        genBacteriaOffspring();
     }
     
     /* 
@@ -222,36 +232,55 @@ public class CoEvoGA {
     	return -1;
     }
     
-    public void genOffspring(int hostIndex, int virusIndex) {
+    public void genVirusOffspring(int hostIndex, int virusIndex) {
     	if (printDebug == 1){
     		System.out.println("genOffspring whooohahah");
     	}
     	Bacteria host = bacteriaPop.getAtIndex(hostIndex);
     	Virus virus = virusPop.getAtIndex(virusIndex);
-    	
+
+        ArrayList<Virus> tempVirusPop = new ArrayList<Virus>();
     	host.evalFitness(virus);
-    	
-    	int numBacteriaOffspring = (int) (host.getFitness() * maxBacteriaChildren);
+
+        //the number of children is proportional to the fitness of an individual
     	int numVirusOffspring = (int) (virus.getFitness() * maxVirusChildren);
-    	
+
+        // Kill the parents
     	Bacteria parentBacteria = bacteriaPop.remove(hostIndex);
     	Virus parentVirus = virusPop.remove(virusIndex);
-    	
-    	for (int i=0; i<numBacteriaOffspring; i++) {
 
-    		Bacteria child = new Bacteria(parentBacteria, 0);
-    		child.mutate(mutRate);
-    		bacteriaPop.add(child);
-    		
-    	}
-    	
-    	for (int j=0; j<numVirusOffspring; j++) {
+        // Generate the virus offspring
+        for (int j=0; j<numVirusOffspring; j++) {
 
-    		Virus child = new Virus(parentVirus, 0);
-    		child.mutate(mutRate);
-    		virusPop.add(child);
-    		
-    	}
+            Virus child = new Virus(parentVirus, nextSerialID());
+            child.mutate(mutRate);
+            tempVirusPop.add(child);
+
+        }
+        // all the viruses that didn't infect a bacteria do not reproduce and die
+        virusPop.setPop(tempVirusPop);
+
+
+    }
+
+    public void genBacteriaOffspring(){
+        ArrayList<Bacteria> tempBactPop = new ArrayList<Bacteria>();
+        // then children are generated for all the bacteria who were not infected
+        for (int i = 0; i < bacteriaPop.getPopSize(); i++) {
+            Bacteria parentBacteria = bacteriaPop.remove(i);
+            // Have to use objective (viability based) fitness because these have not interacted with viruses
+            int numBacteriaOffspring = (int) (parentBacteria.getFitness() * maxBacteriaChildren);
+
+
+            for (int j = 0; j < numBacteriaOffspring; j++) {
+
+                Bacteria child = new Bacteria(parentBacteria, nextSerialID());
+                child.mutate(mutRate);
+                tempBactPop.add(child);
+
+            }
+        }
+        bacteriaPop.setPop(tempBactPop);
     }
     
     public void mutate() {
