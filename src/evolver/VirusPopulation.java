@@ -74,7 +74,7 @@ public class VirusPopulation {
 		double curSumFit = 0;
 		int curPopIndex = -1;
 		int tempIndex = 0;
-		while (curPopIndex + 1< inds.size()) {
+		while (curPopIndex + 1 < inds.size()) {
 
 
 //            System.out.println(getPopSize() + " " + tempIndex + " " + curPopIndex);

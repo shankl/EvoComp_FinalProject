@@ -185,6 +185,9 @@ public class Bacteria {
     	fit = fit*Math.pow(1-this.costOfDeleteriousAllele, delet);
     	this.fitness = fit;
 	}
+	public void setFit(double fit) {
+		this.fitness = fit;
+	}
 
 	/** uniform mutation, each bit in the genome has a mutRate probability of being chosen to mutate,
      * if chosen the bit is set to a random choice of 0 or 1 (note this means there is a 50% chance

@@ -16,17 +16,17 @@ bacteriaPopSize: 1000
 CarryingCapacityRatio: 5
 
 # Base Mutation Rate as a percent. Default .01%
-mutRate: .01
+mutRate: .9
 
 # Interaction Model. Default 1
 # 0 is matching Allele
 # 1 is Gene for Gene
-interactionModel: 0	
+interactionModel: 1
 
 # Costs of various traits
 costOfVirulence: .5
 costOfResistance: .5
-costOfDeleteriousAlleles: .5
+costOfDeleteriousAlleles: .25
 
 # Number of certain genes
 # Default 10 viability, 5 Resistance/Virulence
@@ -36,10 +36,10 @@ numResVirGenes: 5
 # Max number of children
 # Defaults 5 virus, 50 bacteria
 maxVirusChildren: 5
-maxBacteriaChildren: 5
+maxBacteriaChildren: 50
 
 # Unrelated things
-GenCSV: 1
+GenCSV: 0
 DebugPrint: 0
 
 
