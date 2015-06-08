@@ -147,7 +147,7 @@ public class CoEvoGA {
     	Virus infector = null;
     	int infectorIndex = -1;
     	
-    	for (int i=0; i < bacteriaPop.getPopSize() * sampleProportion; i++) {
+    	for (int i=0; i < bacteriaPop.getPopSize()*sampleProportion; i++) {
     		Bacteria host = bacteriaPop.getAtIndex(i);
     		switch(host.getInteractionModel()) {
     		case 0:
@@ -271,13 +271,11 @@ public class CoEvoGA {
             // Have to use objective (viability based) fitness because these have not interacted with viruses
             int numBacteriaOffspring = (int) (parentBacteria.getFitness() * maxBacteriaChildren);
 
-
             for (int j = 0; j < numBacteriaOffspring; j++) {
 
                 Bacteria child = new Bacteria(parentBacteria, nextSerialID());
                 child.mutate(mutRate);
                 tempBactPop.add(child);
-
             }
         }
         bacteriaPop.setPop(tempBactPop);
@@ -289,8 +287,8 @@ public class CoEvoGA {
     }
     
     public void cull(){
-    	virusPop.cull(virusPopSize);
-    	bacteriaPop.cull(bacteriaPopSize);
+    	virusPop.cull((int)(virusPopSize*kRatio));
+    	bacteriaPop.cull((int)(bacteriaPopSize* kRatio));
     }
     
 	public static void main(String[] args) throws IOException {
@@ -312,20 +310,13 @@ public class CoEvoGA {
             gens++;
             
             // Interact the viruses and bacteria. When this is done, the population will be 
-    		// unmutated offspring, and anything that didn't die 
+    		// mutated offspring
             EA.interact();
-
             if (EA.virusPop.getPopSize() > EA.virusPopSize * EA.kRatio || EA.bacteriaPop.getPopSize() > EA.bacteriaPopSize * EA.kRatio){
                 EA.cull();
             }
             
-            // counts number of mutators in current bacteria population
-            double numMut = 0;
-            for (int i = 0; i < EA.bacteriaPop.getPopSize(); i++) {
-            	Bacteria bact = EA.bacteriaPop.getAtIndex(i);
-            	if (bact.hasMutator()) numMut++;           	
-            }
-            double propMut = 100*numMut/EA.bacteriaPop.getPopSize();
+            double propMut = EA.bacteriaPop.getPercentMutants();
             if (EA.genCSV == 1) {
             	String results = Integer.toString(gens) + "#" + Integer.toString(EA.bacteriaPop.getPopSize()) 
             			+ "#" + Double.toString(propMut) + "#" + Integer.toString(EA.virusPop.getPopSize());
@@ -336,9 +327,7 @@ public class CoEvoGA {
         }
         
         writer.close();
-        EA.printPopulations();
-        System.out.println(EA.virusPop.getPopSize());
-        System.out.println(EA.bacteriaPop.getPopSize());
+        //EA.printPopulations();
         System.out.println("Done");
 	}
 }

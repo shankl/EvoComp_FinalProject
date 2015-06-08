@@ -36,10 +36,10 @@ numResVirGenes: 5
 # Max number of children
 # Defaults 5 virus, 50 bacteria
 maxVirusChildren: 5
-maxBacteriaChildren: 50
+maxBacteriaChildren: 5
 
 # Unrelated things
-GenCSV: 0
+GenCSV: 1
 DebugPrint: 0
 
 
