@@ -9,7 +9,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Random;
+import java.util.Set;
 
 import com.opencsv.CSVWriter;
 
@@ -36,6 +38,8 @@ public class CoEvoGA {
 	private int genCSV = -1;
 	private int printDebug = -1;
     private int serialID = 0;
+    private ParentTracker bactParents;
+    private ParentTracker virusParents;
 
 
     /** Set up EA with one virus population and one bacteria population **/
@@ -46,6 +50,8 @@ public class CoEvoGA {
         // initialize populations
         virusPop = new VirusPopulation(virusPopSize, interactionModel, numResVirGenes, costOfVirulence, numViabilityGenes, costOfDeleteriousAlleles, this);
         bacteriaPop = new BacteriaPopulation(bacteriaPopSize, interactionModel, numResVirGenes, numViabilityGenes, costOfResistance, costOfDeleteriousAlleles, this);
+        bactParents = new ParentTracker();
+        virusParents = new ParentTracker();
     }
 	
 	/** read all needed variables from file vars.txt so can change them without
@@ -253,9 +259,9 @@ public class CoEvoGA {
 
         // Generate the virus offspring
         for (int j=0; j<numVirusOffspring; j++) {
-
-            Virus child = new Virus(parentVirus, nextSerialID());
-            child.mutate(mutRate);
+        	virusParents.addChild(parentVirus.getID(), parentVirus.getGenome());
+            Virus child = new Virus(parentVirus);
+            child.mutate(mutRate, nextSerialID());
             tempVirusPop.add(child);
 
         }
@@ -274,23 +280,39 @@ public class CoEvoGA {
             int numBacteriaOffspring = (int) (parentBacteria.calcObjFit() * maxBacteriaChildren);
 
             for (int j = 0; j < numBacteriaOffspring; j++) {
-
-                Bacteria child = new Bacteria(parentBacteria, nextSerialID());
-                child.mutate(mutRate);
+            	bactParents.addChild(parentBacteria.getID(), parentBacteria.getGenome());
+                Bacteria child = new Bacteria(parentBacteria);
+                child.mutate(mutRate, nextSerialID());
                 tempBactPop.add(child);
             }
         }
         bacteriaPop.setPop(tempBactPop);
     }
     
-    public void mutate() {
-    	virusPop.mutate(mutRate);
-    	bacteriaPop.mutate(mutRate);
-    }
-    
+
     public void cull(){
     	virusPop.cull((int)(virusPopSize*kRatio));
     	bacteriaPop.cull((int)(bacteriaPopSize* kRatio));
+    }
+    
+    public void evalFinalFitness(){
+    	Set<Integer> bkeys = bactParents.getKeys();
+    	int highestIndB = -1;
+    	int highestValB = -1;
+    	for(Integer key : bkeys){
+    		int currVal = bactParents.getNumChildren(key);
+    		if (currVal > highestValB) highestIndB = key;
+    	}
+    	
+    	Set<Integer> vkeys = virusParents.getKeys();
+    	int highestIndV = -1;
+    	int highestValV = -1;
+    	for (Integer key : vkeys){
+    		int currVal = virusParents.getNumChildren(key);
+    		if (currVal > highestValV) highestIndV = key;
+    	}
+    	
+    	System.out.println("Most Children \nBacteria: " + bactParents.getGenomeString(highestIndB) + "\n Viruses: " + virusParents.getGenomeString(highestIndV));
     }
     
 	public static void main(String[] args) throws IOException {
@@ -330,6 +352,7 @@ public class CoEvoGA {
         
         writer.close();
         EA.printPopulations();
+        EA.evalFinalFitness();
         System.out.println("Done");
 	}
 }

@@ -67,12 +67,12 @@ public class Bacteria {
     	fitness = calcObjFit();
 	}
 
-	public Bacteria(Bacteria copy, int serialID) {
+	public Bacteria(Bacteria copy) {
 		this.genome = copy.getGenome();
         this.costOfDeleteriousAllele = copy.costOfDeleteriousAllele;
         this.costOfResistance = copy.costOfResistance;
         this.parentID = copy.getID();
-		this.id = serialID;
+		this.id = copy.getID(); // only gets its own ID if it mutates
 		this.fitness = copy.getFitness();
 	}
 	
@@ -193,7 +193,9 @@ public class Bacteria {
      * if chosen the bit is set to a random choice of 0 or 1 (note this means there is a 50% chance
      * the chosen bit will not change value, so the expected genomic mutation rate is really
      * (mutRate * genome length * .5) **/
-	public void mutate(double mutRate) {
+	public void mutate(double mutRate, int serialID) {
+		boolean mutated = false;
+		
 		if (hasMutator()) {
 			mutRate = 100*mutRate;
 		}
@@ -214,6 +216,8 @@ public class Bacteria {
 			if (rgen.nextDouble() < mutRate) {
 				seg2[i] = rgen.nextInt(2);
 				this.genome.set(mutatorIndex, seg2);
+				mutated = true;
+
 			}
 		}
 
@@ -221,6 +225,8 @@ public class Bacteria {
 			if (rgen.nextDouble() < mutRate) {
 				seg3[i] = rgen.nextInt(2);
 				this.genome.set(resistIndex, seg3);
+				mutated = true;
+
 			}
 		}
 
@@ -228,7 +234,13 @@ public class Bacteria {
 			if (rgen.nextDouble() < mutRate) {
 				seg4[i] = rgen.nextInt(2);
 				this.genome.set(viabilityIndex, seg4);
+				mutated = true;
+
 			}
+		}
+		
+		if (mutated){
+			this.id = serialID;
 		}
 	}
 

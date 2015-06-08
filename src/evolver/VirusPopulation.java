@@ -53,12 +53,7 @@ public class VirusPopulation {
         inds = newPop;
     }
 
-	/* mutates all individuals in the population */
-	public void mutate(double mutRate) {
-		for (Virus ind : this.inds) {
-			ind.mutate(mutRate);
-		}
-	}
+	
 	
 	public void cull(int targetSize){
 		this.shuffle();
