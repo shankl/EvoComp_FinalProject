@@ -297,10 +297,11 @@ public class CoEvoGA {
 		
         // initialize GA
         CoEvoGA EA = new CoEvoGA();
+		CSVWriter writer = new CSVWriter(new FileWriter(System.currentTimeMillis() + ".csv"));
+
         if (EA.genCSV == 1){
 			 // set up output file and write column headers
-			CSVWriter writer = new CSVWriter(new FileWriter(System.currentTimeMillis() + ".csv"));
-			String[] entries = "gen#p1#p2".split("#");
+			String[] entries = "gen#Bacteria popSize#Proportion Mutator#Virus Popsize".split("#");
 			writer.writeNext(entries);
 		}
         
@@ -313,14 +314,7 @@ public class CoEvoGA {
             // Interact the viruses and bacteria. When this is done, the population will be 
     		// unmutated offspring, and anything that didn't die 
             EA.interact();
-            
-            /** THIS COMMENT IS CURRENTLY FALSE, still working on trees!
-            // the parent virus is removed from the pop in the interaction model
-    		// the parent bacteria is removed in genOffspring, 
-            // when the virus kills it, or it has offspring
-            */
 
-            
             if (EA.virusPop.getPopSize() > EA.virusPopSize * EA.kRatio || EA.bacteriaPop.getPopSize() > EA.bacteriaPopSize * EA.kRatio){
                 EA.cull();
             }
@@ -332,11 +326,16 @@ public class CoEvoGA {
             	if (bact.hasMutator()) numMut++;           	
             }
             double propMut = 100*numMut/EA.bacteriaPop.getPopSize();
+            if (EA.genCSV == 1) {
+            	String results = Integer.toString(gens) + "#" + Integer.toString(EA.bacteriaPop.getPopSize()) 
+            			+ "#" + Double.toString(propMut) + "#" + Integer.toString(EA.virusPop.getPopSize());
+            	String[] dataRow = results.split("#");
+            	writer.writeNext(dataRow);
+            }
             System.out.println("gen: " + gens + "\t Bacteria popsize: " + EA.bacteriaPop.getPopSize() + "\t Proportion Mutator: " + propMut + "\t Virus Popsize: " + EA.virusPop.getPopSize());
         }
-//        if (EA.genCSV == 1){
-//        	writer.close();
-//        }
+        
+        writer.close();
         EA.printPopulations();
         System.out.println(EA.virusPop.getPopSize());
         System.out.println(EA.bacteriaPop.getPopSize());
