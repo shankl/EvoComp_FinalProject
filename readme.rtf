@@ -1,3 +1,24 @@
-After importing stuff into eclipse:
-  1. Right click on file /lib/opencsv-3.4.jar
-  2. Build Path > Add to build path
+Simulating Virus and Host Coevolution
+
+Team Members: Laura Colbran, Samuel Greaves, Liz Shank
+
+Input files:
+	vars.txt (controls parameters for each run)
+
+Output files:
+	timestamp.csv (records values for each run)
+
+To compile and run:
+Go to the CoEvo directory and type the command
+	
+	javac –cp “.:./lib/opencsv-3.4.jar” CoEvoGA.java
+
+then to run, use the command
+
+	java –cp “.:./lib/opencsv-3.4.jar” CoEvoGA
+
+Credits:
+Our code builds on the Simple GA code from CoEvo.java by Sherri Goings. In particular:
+- Modified main CoEvo class in CoEvoGA.java
+- Modified Individual class in Virus.java and Bacteria.java
+- Modified Population class in VirusPopulation.java and BacteriaPopulation.java

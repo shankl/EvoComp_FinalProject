@@ -2,13 +2,13 @@
 # Edit these to change parameters
 
 # Number of generations to run. Default 100
-nGens: 100
+nGens: 200
 
 # Initial Population sizes. 
 # Bacteria should be about 100x more than viruses
 # Default Virus size 10
 virusPopSize: 10
-# Default Bacteria size 1000
+# Default Bacteria size 100
 bacteriaPopSize: 1000
 # Determines max size of pop. If this is exceeded, 
 # population is culled to the normal pop sizes
@@ -16,7 +16,7 @@ bacteriaPopSize: 1000
 CarryingCapacityRatio: 5
 
 # Base Mutation Rate as a percent. Default .01%
-mutRate: .9
+mutRate: .01
 
 # Interaction Model. Default 1
 # 0 is matching Allele
@@ -39,7 +39,7 @@ maxVirusChildren: 5
 maxBacteriaChildren: 50
 
 # Unrelated things
-GenCSV: 0
+GenCSV: 1
 DebugPrint: 0
 
 

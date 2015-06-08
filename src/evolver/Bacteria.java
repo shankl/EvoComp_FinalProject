@@ -78,7 +78,7 @@ public class Bacteria {
 	
 	/* returns the whole genome */
 	public ArrayList<int[]> getGenome() {
-		return this.genome;
+		return new ArrayList<int[]>( genome);
 	}
 	
 	/* returns interaction model */
@@ -199,6 +199,7 @@ public class Bacteria {
 		if (hasMutator()) {
 			mutRate = 100*mutRate;
 		}
+    	
 
 		int[] seg1 = this.genome.get(intModIndex);
 		int[] seg2 = this.genome.get(mutatorIndex);

@@ -53,8 +53,7 @@ public class VirusPopulation {
         inds = newPop;
     }
 
-	
-	
+
 	public void cull(int targetSize){
 		this.shuffle();
 		ArrayList<Virus> temp = new ArrayList<Virus>();

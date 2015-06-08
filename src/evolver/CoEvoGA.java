@@ -199,8 +199,7 @@ public class CoEvoGA {
     	}
     	if (i < virusPop.getPopSize()) {
     		return i;
-    	}
-    	
+    	}  	
     	// if no viruses matched, return null
     	return -1;
     }
@@ -224,6 +223,7 @@ public class CoEvoGA {
     				bacteria.evalFitness(virusPop.getAtIndex(i));
     				hostFit += bacteria.getFitness();
     				numInfect++;
+    				break;
     			}
     			j++;
     		}
@@ -233,7 +233,6 @@ public class CoEvoGA {
     	if (i < virusPop.getPopSize()) {
     		return i;
     	}
-    	
     	// if no viruses matched, return null
     	return -1;
     }
@@ -263,12 +262,9 @@ public class CoEvoGA {
             Virus child = new Virus(parentVirus);
             child.mutate(mutRate, nextSerialID());
             tempVirusPop.add(child);
-
         }
         // all the viruses that didn't infect a bacteria do not reproduce and die
         virusPop.setPop(tempVirusPop);
-
-
     }
 
     public void genBacteriaOffspring(){
@@ -291,8 +287,8 @@ public class CoEvoGA {
     
 
     public void cull(){
-    	virusPop.cull((int)(virusPopSize*kRatio));
-    	bacteriaPop.cull((int)(bacteriaPopSize* kRatio));
+    	virusPop.cull((int)(virusPopSize));
+    	bacteriaPop.cull((int)(bacteriaPopSize));
     }
     
     public void evalFinalFitness(){
@@ -301,7 +297,11 @@ public class CoEvoGA {
     	int highestValB = -1;
     	for(Integer key : bkeys){
     		int currVal = bactParents.getNumChildren(key);
-    		if (currVal > highestValB) highestIndB = key;
+    		if (currVal > highestValB) {
+    			highestIndB = key;
+    			highestValB = currVal;
+    		}
+ 
     	}
     	
     	Set<Integer> vkeys = virusParents.getKeys();
@@ -309,10 +309,14 @@ public class CoEvoGA {
     	int highestValV = -1;
     	for (Integer key : vkeys){
     		int currVal = virusParents.getNumChildren(key);
-    		if (currVal > highestValV) highestIndV = key;
+    		if (currVal > highestValV) {
+    			highestIndV = key;
+    			highestValV = currVal;
+    		}
     	}
     	
-    	System.out.println("Most Children \nBacteria: " + bactParents.getGenomeString(highestIndB) + "\n Viruses: " + virusParents.getGenomeString(highestIndV));
+    	System.out.println("Most Children \nBacteria: " + bactParents.getGenomeString(highestIndB) + " with " +
+    	 highestValB + " children\nViruses: " + virusParents.getGenomeString(highestIndV) + " with " + highestValV + " children");
     }
     
 	public static void main(String[] args) throws IOException {
@@ -348,8 +352,7 @@ public class CoEvoGA {
             	writer.writeNext(dataRow);
             }
             System.out.println("gen: " + gens + "\t Bacteria popsize: " + EA.bacteriaPop.getPopSize() + "\t Proportion Mutator: " + propMut + "\t Virus Popsize: " + EA.virusPop.getPopSize());
-        }
-        
+        }        
         writer.close();
         EA.printPopulations();
         EA.evalFinalFitness();
