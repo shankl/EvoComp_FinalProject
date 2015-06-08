@@ -60,7 +60,6 @@ public class VirusPopulation {
 		ArrayList<Virus> temp = new ArrayList<Virus>();
 		double sumFit = 0;
 		for (Virus ind : inds) sumFit += ind.calcObjFit();
-
 		// if all fitnesses are 0, don't change population
 		if (sumFit==0) return;
 
@@ -70,7 +69,6 @@ public class VirusPopulation {
 		double curSumFit = 0;
 		int curPopIndex = -1;
 		int tempIndex = 0;
-
 		while (tempIndex < inds.size()) {
 			if (curSumFit >= curPoint) {
 				temp.set(tempIndex, inds.get(curPopIndex));
@@ -83,7 +81,7 @@ public class VirusPopulation {
 			}
 		}
 		inds = temp;
-		
+		System.out.println(inds);
 	}
 	
 	/* prints all individuals in the population */

@@ -290,24 +290,27 @@ public class CoEvoGA {
     		// the parent bacteria is removed in genOffspring, 
             // when the virus kills it, or it has offspring
             */
+
             
-            // mutate virus and bacteria
-            //EA.mutate();
-            
-            // print population stats to csv--- probably want frequencies over time?
-            System.out.println(EA.virusPop.getPopSize());
-            System.out.println(EA.bacteriaPop.getPopSize());
             if (EA.virusPop.getPopSize() > EA.virusPopSize * EA.kRatio || EA.bacteriaPop.getPopSize() > EA.bacteriaPopSize * EA.kRatio){
                 EA.cull();
             }
             
-            System.out.println("gen: " + gens + "\t Bacteria popsize: " + EA.bacteriaPop.getPopSize() + "\t Virus Popsize: " + EA.virusPop.getPopSize());
+            // counts number of mutators in current bacteria population
+            double numMut = 0;
+            for (int i = 0; i < EA.bacteriaPop.getPopSize(); i++) {
+            	Bacteria bact = EA.bacteriaPop.getAtIndex(i);
+            	if (bact.hasMutator()) numMut++;           	
+            }
+            double propMut = 100*numMut/EA.bacteriaPop.getPopSize();
+            System.out.println("gen: " + gens + "\t Bacteria popsize: " + EA.bacteriaPop.getPopSize() + "\t Proportion Mutator: " + propMut + "\t Virus Popsize: " + EA.virusPop.getPopSize());
         }
 //        if (EA.genCSV == 1){
 //        	writer.close();
 //        }
         EA.printPopulations();
-        
+        System.out.println(EA.virusPop.getPopSize());
+        System.out.println(EA.bacteriaPop.getPopSize());
         System.out.println("Done");
 	}
 }

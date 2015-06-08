@@ -164,12 +164,12 @@ public class Virus implements Comparable<Virus>{
 		int[] seg2 = this.genome.get(virulenceIndex);
 		int[] seg3 = this.genome.get(viabilityIndex);
 
-		for (int i=0; i<seg1.length; i++) {
-			if (rgen.nextDouble() < mutRate) {
-				seg1[i] = rgen.nextInt(2);
-				this.genome.set(intModIndex, seg1);
-			}
-		}
+//		for (int i=0; i<seg1.length; i++) {
+//			if (rgen.nextDouble() < mutRate) {
+//				seg1[i] = rgen.nextInt(2);
+//				this.genome.set(intModIndex, seg1);
+//			}
+//		}
 
 		for (int i=0; i<seg2.length; i++) {
 			if (rgen.nextDouble() < mutRate) {
