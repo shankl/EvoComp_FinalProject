@@ -54,12 +54,6 @@ public class BacteriaPopulation {
         inds = newPop;
     }
 
-	/* mutates all individuals in the population */
-	public void mutate(double mutRate) {
-		for (Bacteria ind : this.inds) {
-			ind.mutate(mutRate);
-		}
-	}
 	/* returns number of individuals in the population with the mutator gene */
 	public int getNumMutants() {
 		int count = 0;

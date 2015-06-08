@@ -193,8 +193,7 @@ public class CoEvoGA {
     	}
     	if (i < virusPop.getPopSize()) {
     		return i;
-    	}
-    	
+    	}  	
     	// if no viruses matched, return null
     	return -1;
     }
@@ -228,8 +227,6 @@ public class CoEvoGA {
     	if (i < virusPop.getPopSize()) {
     		return i;
     	}
-
-    	
     	// if no viruses matched, return null
     	return -1;
     }
@@ -247,7 +244,6 @@ public class CoEvoGA {
 
         //the number of children is proportional to the fitness of an individual
     	int numVirusOffspring = (int) (virus.getFitness() * maxVirusChildren);
-    	System.out.println(numVirusOffspring);
 
         // Kill the parents
     	if (host.getFitness() < 0.5) {bacteriaPop.remove(hostIndex);}
@@ -260,12 +256,9 @@ public class CoEvoGA {
             Virus child = new Virus(parentVirus, nextSerialID());
             child.mutate(mutRate);
             tempVirusPop.add(child);
-
         }
         // all the viruses that didn't infect a bacteria do not reproduce and die
         virusPop.setPop(tempVirusPop);
-
-
     }
 
     public void genBacteriaOffspring(){
@@ -275,7 +268,6 @@ public class CoEvoGA {
             Bacteria parentBacteria = bacteriaPop.remove(i);
             // Have to use objective (viability based) fitness because these have not interacted with viruses
             int numBacteriaOffspring = (int) (parentBacteria.calcObjFit() * maxBacteriaChildren);
-        	System.out.println(numBacteriaOffspring);
 
             for (int j = 0; j < numBacteriaOffspring; j++) {
 
@@ -285,11 +277,6 @@ public class CoEvoGA {
             }
         }
         bacteriaPop.setPop(tempBactPop);
-    }
-    
-    public void mutate() {
-    	virusPop.mutate(mutRate);
-    	bacteriaPop.mutate(mutRate);
     }
     
     public void cull(){

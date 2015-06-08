@@ -16,7 +16,7 @@ bacteriaPopSize: 1000
 CarryingCapacityRatio: 5
 
 # Base Mutation Rate as a percent. Default .01%
-mutRate: .9
+mutRate: .01
 
 # Interaction Model. Default 1
 # 0 is matching Allele

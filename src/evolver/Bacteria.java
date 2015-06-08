@@ -197,6 +197,7 @@ public class Bacteria {
 		if (hasMutator()) {
 			mutRate = 100*mutRate;
 		}
+    	
 
 		int[] seg1 = this.genome.get(intModIndex);
 		int[] seg2 = this.genome.get(mutatorIndex);
