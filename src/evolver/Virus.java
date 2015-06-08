@@ -8,6 +8,7 @@ public class Virus implements Comparable<Virus>{
 	private double fitness;
 	private int id;
 	private double costOfDeleteriousAllele;
+	private Random rgen = new Random();
 	
 	/*
 	 * Genome layout:
@@ -41,8 +42,8 @@ public class Virus implements Comparable<Virus>{
     	int[] virulenceAlleles = new int[numResVirGenes];
     	for (int i = 0; i < numResVirGenes; i++){      	
         	virulenceAlleles[i] = 0;
-    	}	
-    	virulenceAlleles[0] = 1;
+    	}
+    	virulenceAlleles[rgen.nextInt(numResVirGenes)] = 1;
     	genome.add(virulenceAlleles);
     	
     	// adds viability genes. All initialized to 1. Can mutate to zero
@@ -65,7 +66,7 @@ public class Virus implements Comparable<Virus>{
 	}
 	
 	// not yet working
-	/*
+	
 	public Virus(Virus copy, int serialID) {
 		this.genome = copy.getGenome();
 		this.id = serialID;
@@ -73,7 +74,7 @@ public class Virus implements Comparable<Virus>{
 		//this.familyTree = copy.getFamily();
 		//updateTree(copy);
 	}
-	
+	/*
 	public void updateTree(Virus old) {
 		Tree<Virus> parent = new Tree<Virus>(old);
 	}
@@ -156,7 +157,7 @@ public class Virus implements Comparable<Virus>{
      * if chosen the bit is set to a random choice of 0 or 1 (note this means there is a 50% chance 
      * the chosen bit will not change value, so the expected genomic mutation rate is really 
      * (mutRate * genome length * .5) **/
-	public void mutate(double mutRate, Random rgen) {
+	public void mutate(double mutRate) {
 		
 
 		int[] seg1 = this.genome.get(intModIndex);

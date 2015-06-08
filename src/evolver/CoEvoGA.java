@@ -158,7 +158,7 @@ public class CoEvoGA {
     		
     		if (infectorIndex > -1) {
     			genOffspring(i,infectorIndex);
-    		}
+    		} 
     	}
     }
     
@@ -235,7 +235,7 @@ public class CoEvoGA {
     	int numVirusOffspring = (int) (virus.getFitness() * maxVirusChildren);
     	
 //    	Bacteria parentBacteria = bacteriaPop.remove(hostIndex);
-//    	Virus parentVirus = virusPop.remove(virusIndex);
+    	Virus parentVirus = virusPop.remove(virusIndex);
     	
     	for (int i=0; i<numBacteriaOffspring; i++) {
     		// need to implement this constructor in Bacteria
@@ -248,11 +248,11 @@ public class CoEvoGA {
     	
     	for (int j=0; j<numVirusOffspring; j++) {
     		// need to implement this constructor in Virus
-    		/*
-    		Virus child = new Virus(parentVirus);
-    		child.mutate();
+    		
+    		Virus child = new Virus(parentVirus, 0);
+    		child.mutate(mutRate);
     		virusPop.add(child);
-    		*/
+    		
     	}
     }
     
@@ -270,7 +270,6 @@ public class CoEvoGA {
 		
         // initialize GA
         CoEvoGA EA = new CoEvoGA();
-        
         if (EA.genCSV == 1){
 			 // set up output file and write column headers
 			CSVWriter writer = new CSVWriter(new FileWriter(System.currentTimeMillis() + ".csv"));
@@ -295,13 +294,10 @@ public class CoEvoGA {
             */
             
             // mutate virus and bacteria
-            EA.mutate();
+            //EA.mutate();
             
             // print population stats to csv--- probably want frequencies over time?
             
-            // fitprop used to control population numbers - cull!
-            //    		ev.fitPropSelect(1, bacteria);
-            //    		ev.fitPropSelect(1, viruses);
             if (EA.virusPop.getPopSize() > EA.virusPopSize * EA.kRatio || EA.bacteriaPop.getPopSize() > EA.bacteriaPopSize * EA.kRatio){
                 EA.cull();
             }

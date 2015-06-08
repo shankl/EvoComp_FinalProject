@@ -8,6 +8,7 @@ public class Bacteria {
 	private double costOfDeleteriousAllele;
 	private double fitness;
 	private int id;
+	private Random rgen = new Random();
 	
 	/*
 	 * Genome layout:
@@ -43,13 +44,12 @@ public class Bacteria {
     	mutatorGene[0] = 0;
     	genome.add(mutatorGene);    	
 
-    	// adds space for resistance alleles. Same number possible as viability
-    	// genes. (can change?) initialized with 1 allele
-    	int[] resistAlleles = new int[numViabilityGenes];
+    	// adds space for resistance alleles. initialized with 1 allele
+    	int[] resistAlleles = new int[numResVirGenes];
     	for (int i = 0; i < numResVirGenes; i ++ ){
     		resistAlleles[i] = 0;
     	}
-    	resistAlleles[0] = 1;
+    	resistAlleles[rgen.nextInt(numResVirGenes)] = 1;
     	genome.add(resistAlleles);
     	
     	// adds viability genes. All initialized to 1. Can mutate to zero
@@ -175,7 +175,7 @@ public class Bacteria {
      * if chosen the bit is set to a random choice of 0 or 1 (note this means there is a 50% chance
      * the chosen bit will not change value, so the expected genomic mutation rate is really
      * (mutRate * genome length * .5) **/
-	public void mutate(double mutRate, Random rgen) {
+	public void mutate(double mutRate) {
 		if (hasMutator()) {
 			mutRate = 100*mutRate;
 		}

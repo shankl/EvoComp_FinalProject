@@ -21,7 +21,17 @@ public class VirusPopulation {
 			serialID++;
 		}
 	}
+	/* adds an individual to the population */
+	public void add( Virus child) {
+		inds.add(child);
+	}
 	
+	/* removes an individual from the population */
+	public Virus remove(int parentIndex) {
+		Virus parent = inds.get(parentIndex);
+		inds.remove(parentIndex);
+		return parent;
+	}
 	
 	/* returns popSize */
 	public int getPopSize() {
@@ -41,7 +51,7 @@ public class VirusPopulation {
 	/* mutates all individuals in the population */
 	public void mutate(double mutRate) {
 		for (Virus ind : this.inds) {
-			ind.mutate(mutRate, rgen);
+			ind.mutate(mutRate);
 		}
 	}
 	
