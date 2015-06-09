@@ -48,7 +48,7 @@ Viruses and hosts are divided into two populations, with individual genomes bein
 	 \hline\hline
  	Host & yes & yes & yes & yes\\
 	 \hline
- 	Virus & yes & yes & yes & no\\
+ 	Virus & yes & no & yes & yes\\
 	 \hline
 	\end{tabular}
 	\caption{Representation of Virus and Host Individuals. Both are ArrayLists of Arrays.}
@@ -70,7 +70,7 @@ W_{H}(i,n) = (1-s_{v})^n(1-a\cdot c)^z(1-s\cdot W_{Pij}),
 
 where $s_{v}$ is the effect of each deleterious mutation, $c$ is the cost of each resistance allele, $z$ is the number of resistance alleles, $s$ is maximum virulence of the virus, and $W_{Pij}$ is the fitness of virus $j$ on host $i$. Total fitness for each host is $\sum W_{H}(i,n)$ for all viruses able to infect it. 
 
-These fitness functions work with the interaction models to operate as a version of fitness-proportional selection (Figure 3). Viruses interact with a sample of the bacterial population, and fitnesses are evaluated before reproduction. Both viruses and bacteria undergo asexual reproduction, and have the potential to make many children. How fit an individual is determines what proportion of its maximum potential children actually get created. These clonal children undergo mutation at the rate dictated by their genome and the systemic mutation rate. Crossover does not occur, as each child has only one parent. Individuals die after reproducing and are removed from the population. The populations are allowed to vary, within certain limits analogous to a carrying capacity. If a population overshoots the limit, individuals are culled in a fitness-proportional manner, with the least fit individuals being more likely to be removed. We used a phylogenetic tree to track the progress of 'families' of individuals.
+These fitness functions work with the interaction models to operate as a version of fitness-proportional selection (Figure 3). Viruses interact with all of the bacterial population, and fitnesses are evaluated before reproduction. Both viruses and bacteria undergo asexual reproduction, and have the potential to make many children. How fit an individual is determines what proportion of its maximum potential children actually get created. These clonal children undergo mutation at the rate dictated by their genome and the systemic mutation rate. Crossover does not occur, as each child has only one parent. Individuals die after reproducing and are removed from the population. The populations are allowed to vary, within certain limits analogous to a carrying capacity. If a population overshoots the limit, individuals are culled in a fitness-proportional manner, with the least fit individuals being more likely to be removed. Culling fitness is determined by an objective measure, a function of the number of viability genes and deleterious alleles. Final overall fitness was determined by how many clones of each genome existed in the final population.
 
 \begin{figure}[H]
 	\centering
@@ -79,16 +79,24 @@ These fitness functions work with the interaction models to operate as a version
 \end{figure}
 
 \section{Results of Simulation}
-- graph demonstrating duplication of results (so comparison is valid!)
-\\- what happens if we let viruses evolve frequent mutation?
-\\- gradient of mutation rates?
-\\- bacterial sampling methods
-\\- evolving interaction models
+Due to debugging issues, we ran out of time to do most of the experiments we wanted to. As is clearly shown in in Figure 3, we were unable to replicate the results of Pal et al. (2007), and didn't feel it was worth carrying on to doing other experiments without having the baseline comparison. Any results we got would be meaningless without the assurance that our program was mimicking virus-host interactions in a similar way to theirs. We worked out that the oscillations were because the population was settling on exactly one genome for every individual, even though they were uniquely created (attached id numbers were unique). We decided that probably had to do with how we were using fitness to determine the number of children, so we tweaked those equations. Originally, we used a form of objective fitness, and believe that that resulted in the populations each doing their own thing rather than coevolving. After reworking the fitness functions to incorporate those listed in the Algorithm section above more explicitly, we ended up with behaviour as demonstrated in Figure 4. The selection was so strong that individuals weren't replacing themselves, and populations would crash to zero individuals. Figure 4 is from one of our attempts to diagnose the problem by giving the bacteria constant numbers of children, which at least prevented the population crash. It did, however, bring back the problem of one dominating genome, since it removed selective pressure. The culling method used to cap the populations utilized objective fitness (based on viability genes) was the only thing controlling what individuals were in the population, and led to really strong selection for the most objectively fit individual. We did experiment with various parameters to see if they would change things. Increasing the population sizes and base mutation rates were the only alterations that noticeably altered the pattern. Both increased the number of generations it took for the bacteria population to settle to the oscillations between single genomes. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\textwidth]{figure3.png}
+	\caption{Frequencies over time of a mutator gene that increases mutation rate 100-fold in the host population. It eventually settled in a random oscillation between 100\% and zero. Host population was capped at 5000, while virus max was 500.}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\textwidth]{figure4.png}
+	\caption{Sizes of bacteria and virus populations over 100 generations. Virus population crashed to zero in generation 49. Host population was capped at 1000, while virus max was 10.}
+\end{figure}
 
 \section{Discussion}
-What was hard? What are some new results/what might they imply biologically? What are some new directions to try?
+Because we didn't get any positive results, there isn't much true research to discuss. The biggest problems we had were with interpreting the information in the paper in order to actually code things. Because it was written as biology research rather than for computer science, the authors were not terribly specific about what precisely their algorithm. The problems we were struggling with at the end were mostly because they didn't tell us how the fitness functions translated to reproduction. We were therefore left to our own inspiration to come up with those sections of the algorithm, and due to our relative lack of experience with these types of of algorithms we probably were slower to implement new attempts as well as less quick to recognize dead-ends than would be ideal.
 
-- interpreting their methods was interesting-- published for biologists! They didn't plan for people caring so much about their specific algorithm. 
+Given more time, there are many things we would like to do once the fitness functions have been sorted. We decided pretty early on that it would be useful to be able to track phylogenies as evolution took place, and spent quite a lot of time trying to implement a tree that would allow us to do that. We were unsuccessful at that as well, and ended up with a less powerful implementation using hashtables and tracking clones rather than all children. Getting the full version we envisioned running would be a priority. We would also like to tweak the parameters to determine the optimal settings for our simulation. With the semi-broken version from Figure 3, we can infer that it takes about 400 generations to stabilize. However, that will not necessarily be true in the working version. Additionally, there are trade-off values that introduce costs for being very resistant, or very virulent. It would be very interesting to find what values of those best support coevolution, and how much it would take to bias the outcome toward one population or the other. 
 
 \section{Works Cited}
 Agrawal, A. and C.M. Lively. 2002. Infection genetics: gene-for-gene versus matching-alleles models and \\\-\hspace{0.75cm} all points in between. Evolutionary Ecology Research. 4: 79-90.
