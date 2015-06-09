@@ -192,7 +192,7 @@ public class CoEvoGA {
     	}
     	return canInfect;
     }
-
+    
     // Gene for Gene interaction model
  	// infects a bacterium with the first virus it encounters that can infect it
  	// Virus can infect a host if it has a virulence gene that the host does not have a resistance gene for
@@ -222,8 +222,8 @@ public class CoEvoGA {
     		//the number of children is proportional to the fitness of an individual
     		int numVirusOffspring = (int) (virus.getFitness()/bacteriaPop.getPopSize() * maxVirusChildren);
     		for (int j=0; j<numVirusOffspring; j++) {
-    			Virus child = new Virus(virus, nextSerialID());
-    			child.mutate(mutRate);
+    			Virus child = new Virus(virus);
+    			child.mutate(mutRate, nextSerialID());
     			tempVirusPop.add(child);
     		}
     	}
@@ -238,8 +238,8 @@ public class CoEvoGA {
             //int numBacteriaOffspring = (int) (bacteriaPop.getAtIndex(i).getFitness()/virusPop.getPopSize() * maxBacteriaChildren);
             int numBacteriaOffspring = maxBacteriaChildren;
             for (int j = 0; j < numBacteriaOffspring; j++) {
-                Bacteria child = new Bacteria(bacteriaPop.getAtIndex(i), nextSerialID());
-                child.mutate(mutRate);
+                Bacteria child = new Bacteria(bacteriaPop.getAtIndex(i));
+                child.mutate(mutRate, nextSerialID());
 
                 tempBactPop.add(child);
             }

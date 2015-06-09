@@ -184,15 +184,7 @@ public class Bacteria {
 
     	double fit = Math.pow(1-this.costOfResistance*getInteractionModel(),resist)*(1-virus.getFitness()*vir);
     	fit = fit*Math.pow(1-this.costOfDeleteriousAllele, delet);
-<<<<<<< HEAD
     	this.fitness = this.fitness + fit;
-=======
-    	this.fitness = fit;
-	}
-
-	public void setFit(double fit) {
-		this.fitness = fit;
->>>>>>> origin/master
 	}
 
 	/** uniform mutation, each bit in the genome has a mutRate probability of being chosen to mutate,
