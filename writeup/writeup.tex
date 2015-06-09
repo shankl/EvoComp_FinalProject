@@ -51,7 +51,7 @@ Viruses and hosts are divided into two populations, with individual genomes bein
  	Virus & yes & no & yes & yes\\
 	 \hline
 	\end{tabular}
-	\caption{Representation of Virus and Host Individuals. Both are ArrayLists of Arrays.}
+	\caption{Representation of Virus and Host Individuals. Both are ArrayLists of Arrays, and individuals are associated with unique ID codes.}
 	\label{table:1}
 	\end{center}
 \end{table}
@@ -83,20 +83,22 @@ Due to debugging issues, we ran out of time to do most of the experiments we wan
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.75\textwidth]{figure3.png}
+	\includegraphics[width=0.8\textwidth]{figure3.png}
 	\caption{Frequencies over time of a mutator gene that increases mutation rate 100-fold in the host population. It eventually settled in a random oscillation between 100\% and zero. Host population was capped at 5000, while virus max was 500.}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.75\textwidth]{figure4.png}
+	\includegraphics[width=0.9\textwidth]{figure4.png}
 	\caption{Sizes of bacteria and virus populations over 100 generations. Virus population crashed to zero in generation 49. Host population was capped at 1000, while virus max was 10.}
 \end{figure}
 
 \section{Discussion}
-Because we didn't get any positive results, there isn't much true research to discuss. The biggest problems we had were with interpreting the information in the paper in order to actually code things. Because it was written as biology research rather than for computer science, the authors were not terribly specific about what precisely their algorithm. The problems we were struggling with at the end were mostly because they didn't tell us how the fitness functions translated to reproduction. We were therefore left to our own inspiration to come up with those sections of the algorithm, and due to our relative lack of experience with these types of of algorithms we probably were slower to implement new attempts as well as less quick to recognize dead-ends than would be ideal.
+Because we didn't get any positive results, there isn't much true research to discuss. The biggest problems we had were with interpreting the information in the paper in order to actually code things. Because it was written as biology research rather than for computer science, the authors were not terribly specific about what precisely their algorithm. The problems we were struggling with at the end were mostly because they didn't tell us how the fitness functions translated to reproduction. We were therefore left to our own inspiration to come up with those sections of the algorithm, and due to our relative lack of experience with these types of of algorithms we probably were slower to implement new attempts as well as less quick to recognize dead-ends than would be ideal. Our study system and representation were also much different from anything we had done in class. While we were able to take some inspiration from the coevolution homework in particular, we were able to directly reuse almost none of the code.
 
-Given more time, there are many things we would like to do once the fitness functions have been sorted. We decided pretty early on that it would be useful to be able to track phylogenies as evolution took place, and spent quite a lot of time trying to implement a tree that would allow us to do that. We were unsuccessful at that as well, and ended up with a less powerful implementation using hashtables and tracking clones rather than all children. Getting the full version we envisioned running would be a priority. We would also like to tweak the parameters to determine the optimal settings for our simulation. With the semi-broken version from Figure 3, we can infer that it takes about 400 generations to stabilize. However, that will not necessarily be true in the working version. Additionally, there are trade-off values that introduce costs for being very resistant, or very virulent. It would be very interesting to find what values of those best support coevolution, and how much it would take to bias the outcome toward one population or the other. 
+Given more time, there are many things we would like to do once the fitness functions have been sorted. For fixing those, the next thing on our list to try was adapting the fitness proportion selection method from a previous homework assignment to choose children for the populations. We decided pretty early on that it would be useful to be able to track phylogenies as evolution took place, and spent quite a lot of time trying to implement a tree that would allow us to do that. We were unsuccessful at that as well, and ended up with a less powerful implementation using hashtables and tracking clones rather than all children. Getting the full version we envisioned running would be a priority. We would also like to tweak the parameters to determine the optimal settings for our simulation. With the semi-broken version from Figure 3, we can infer that it takes about 400 generations to stabilize. However, that will not necessarily be true in the working version. Additionally, there are trade-off values that introduce costs for being very resistant, or very virulent. It would be very interesting to find what values of those best support coevolution, and how much it would take to bias the outcome toward one population or the other. 
+
+Our results overall were disappointing, mostly because there weren't any worth anything. We got so mired in debugging and wrestling with code that we didn't get to spend any time working with the actual simulation, which is what we were excited about in the first place. In that sense, we were not successful at all. However, we did learn a lot about dealing with fitness functions in particular, and that having only one parent doesn't necessarily make things simpler. 
 
 \section{Works Cited}
 Agrawal, A. and C.M. Lively. 2002. Infection genetics: gene-for-gene versus matching-alleles models and \\\-\hspace{0.75cm} all points in between. Evolutionary Ecology Research. 4: 79-90.
