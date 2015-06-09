@@ -10,7 +10,7 @@ public class Bacteria {
 	private int id;
     private int parentID;
 	private Random rgen = new Random();
-	
+
 	/*
 	 * Genome layout:
 	 * 0: interaction Model
@@ -23,7 +23,7 @@ public class Bacteria {
 	private int mutatorIndex = 1;
 	private int resistIndex = 2;
 	private int viabilityIndex = 3;
-	
+
 
 	/* constructor */
 	public Bacteria(int interactionModel, int numResVirGenes, int numViabilityGenes,
@@ -44,7 +44,7 @@ public class Bacteria {
     	// chance of mutation in genome
     	int[] mutatorGene = new int[1];
     	mutatorGene[0] = 0;
-    	genome.add(mutatorGene);    	
+    	genome.add(mutatorGene);
 
     	// adds space for resistance alleles. initialized with 1 allele
     	int[] resistAlleles = new int[numResVirGenes];
@@ -53,7 +53,7 @@ public class Bacteria {
     	}
     	resistAlleles[rgen.nextInt(numResVirGenes)] = 1;
     	genome.add(resistAlleles);
-    	
+
     	// adds viability genes. All initialized to 1. Can mutate to zero
     	// (cost for high mutation rate)
     	int[] viabilityGene = new int[numViabilityGenes];
@@ -67,20 +67,21 @@ public class Bacteria {
     	fitness = 0.0;
 	}
 
-	public Bacteria(Bacteria copy, int serialID) {
+	// constructor for children
+	public Bacteria(Bacteria copy) {
 		this.genome = copy.getGenome();
         this.costOfDeleteriousAllele = copy.costOfDeleteriousAllele;
         this.costOfResistance = copy.costOfResistance;
         this.parentID = copy.getID();
-		this.id = serialID;
-		this.fitness = 0.0;
+		this.id = copy.getID(); // only gets its own ID if it mutates
+		this.fitness = copy.getFitness();
 	}
-	
+
 	/* returns the whole genome */
 	public ArrayList<int[]> getGenome() {
 		return new ArrayList<int[]>( genome);
 	}
-	
+
 	/* returns interaction model */
 	public int getInteractionModel() {
 		return genome.get(intModIndex)[0];
@@ -91,6 +92,7 @@ public class Bacteria {
 		return genome.get(mutatorIndex);
 	}
 
+	// returns if it has the mutator allele
 	public boolean hasMutator() {
 		return getMutator()[0] == 1;
 	}
@@ -113,7 +115,8 @@ public class Bacteria {
     	}
     	return count;
 	}
-	
+
+	// calculates fitness that  is not reliant on an infection by a virus
 	public double calcObjFit(){
         int numDeleterious = genome.get(viabilityIndex).length - getViability();
         double objFit = Math.pow(1-costOfDeleteriousAllele, numDeleterious);
@@ -129,7 +132,7 @@ public class Bacteria {
 	public double getFitness() {
 		return fitness;
 	}
-	
+
 	/* returns intModIndex */
 	public int getintModIndex() {
 		return intModIndex;
@@ -149,7 +152,7 @@ public class Bacteria {
     public int getParentID(){
         return parentID;
     }
-	
+
 
 
 	/* reset fitness to objective fitness. If it interacts with a virus this will get overwritten with the new fitness */
@@ -181,50 +184,67 @@ public class Bacteria {
 
     	double fit = Math.pow(1-this.costOfResistance*getInteractionModel(),resist)*(1-virus.getFitness()*vir);
     	fit = fit*Math.pow(1-this.costOfDeleteriousAllele, delet);
+<<<<<<< HEAD
     	this.fitness = this.fitness + fit;
+=======
+    	this.fitness = fit;
+	}
+
+	public void setFit(double fit) {
+		this.fitness = fit;
+>>>>>>> origin/master
 	}
 
 	/** uniform mutation, each bit in the genome has a mutRate probability of being chosen to mutate,
      * if chosen the bit is set to a random choice of 0 or 1 (note this means there is a 50% chance
      * the chosen bit will not change value, so the expected genomic mutation rate is really
      * (mutRate * genome length * .5) **/
-	public void mutate(double mutRate) {
+	public void mutate(double mutRate, int serialID) {
+		boolean mutated = false;
+
 		if (hasMutator()) {
 			mutRate = 100*mutRate;
 		}
-    	
+
 
 		int[] seg1 = this.genome.get(intModIndex);
 		int[] seg2 = this.genome.get(mutatorIndex);
 		int[] seg3 = this.genome.get(resistIndex);
 		int[] seg4 = this.genome.get(viabilityIndex);
 
-//		for (int i=0; i<seg1.length; i++) {
-//			if (rgen.nextDouble() < mutRate) {
-//				seg1[i] = rgen.nextInt(2);
-//				this.genome.set(intModIndex, seg1);
-//			}
-//		}
-
+		// mutates segment 2
 		for (int i=0; i<seg2.length; i++) {
 			if (rgen.nextDouble() < mutRate) {
 				seg2[i] = rgen.nextInt(2);
 				this.genome.set(mutatorIndex, seg2);
+				mutated = true;
+
 			}
 		}
 
+		// mutates segment 3
 		for (int i=0; i<seg3.length; i++) {
 			if (rgen.nextDouble() < mutRate) {
 				seg3[i] = rgen.nextInt(2);
 				this.genome.set(resistIndex, seg3);
+				mutated = true;
+
 			}
 		}
 
+		//mutates segment 4
 		for (int i=0; i<seg4.length; i++) {
 			if (rgen.nextDouble() < mutRate) {
 				seg4[i] = rgen.nextInt(2);
 				this.genome.set(viabilityIndex, seg4);
+				mutated = true;
+
 			}
+		}
+
+		// gives it a new ID if it has been mutated, otherwise it stays the same as the parent ID
+		if (mutated){
+			this.id = serialID;
 		}
 	}
 

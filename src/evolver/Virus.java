@@ -10,7 +10,6 @@ public class Virus implements Comparable<Virus>{
     private int parentID;
 	private double costOfDeleteriousAllele;
 	private Random rgen = new Random();
-	private boolean mutated = false;
 	
 	/*
 	 * Genome layout:
@@ -68,11 +67,11 @@ public class Virus implements Comparable<Virus>{
 	
 	// works, but completely ignores trees
 	
-	public Virus(Virus copy, int serialID) {
+	public Virus(Virus copy) {
 		this.genome = copy.getGenome();
         this.costOfDeleteriousAllele = copy.costOfDeleteriousAllele;
         this.costOfVirulence = copy.costOfVirulence;
-		this.id = serialID;
+		this.id = copy.id;
         this.parentID = copy.id;
 		this.fitness = 0.0;
 	}
@@ -105,6 +104,10 @@ public class Virus implements Comparable<Virus>{
         	return parentID;
     	}
 	
+    public int getID(){
+    	return id;
+    }
+    	
 	/* returns viability as numOnes in viability section of genome */
 	public int getViability(){
 		int count = 0;
@@ -158,34 +161,38 @@ public class Virus implements Comparable<Virus>{
      * if chosen the bit is set to a random choice of 0 or 1 (note this means there is a 50% chance 
      * the chosen bit will not change value, so the expected genomic mutation rate is really 
      * (mutRate * genome length * .5) **/
-	public void mutate(double mutRate) {
+	public void mutate(double mutRate,int serialID) {
+		
+		boolean mutated = false;
 		
 
 		int[] seg1 = this.genome.get(intModIndex);
 		int[] seg2 = this.genome.get(virulenceIndex);
 		int[] seg3 = this.genome.get(viabilityIndex);
 
-//		for (int i=0; i<seg1.length; i++) {
-//			if (rgen.nextDouble() < mutRate) {
-//				seg1[i] = rgen.nextInt(2);
-//				this.genome.set(intModIndex, seg1);
-//			}
-//		}
-
+		// mutates segment 2
 		for (int i=0; i<seg2.length; i++) {
 			if (rgen.nextDouble() < mutRate) {
 				seg2[i] = rgen.nextInt(2);
 				this.genome.set(virulenceIndex, seg2);
+				mutated = true;
 			}
 		}
 
+		// mutates segement 3
 		for (int i=0; i<seg3.length; i++) {
 			if (rgen.nextDouble() < mutRate) {
 				seg3[i] = rgen.nextInt(2);
 				this.genome.set(viabilityIndex, seg3);
+				mutated = true;
+
 			}
 		}
-
+		
+		// gives it a new ID if mutates, otherwise it stays the same as its parent's
+		if (mutated){
+			this.id = serialID;
+		}
 		
 	}
 	

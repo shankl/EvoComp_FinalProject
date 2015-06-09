@@ -3,7 +3,7 @@ package evolver;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Random;
+
 
 public class BacteriaPopulation {
 	private int popSize;
@@ -50,9 +50,11 @@ public class BacteriaPopulation {
 		Collections.shuffle(inds);
 	}
 
+	// changes the population to a new population (when children are added)
     public void setPop(ArrayList<Bacteria> newPop){
         inds = newPop;
     }
+
 
 	/* returns number of individuals in the population with the mutator gene */
 	public int getNumMutants() {
@@ -93,7 +95,7 @@ public class BacteriaPopulation {
         System.out.println();
 	}
 
-	
+	// cuts the population size down to the target Size using fitness proportional selection
 	public void cull(int targetSize){
 		this.shuffle();
 		ArrayList<Bacteria> temp = new ArrayList<Bacteria>();
