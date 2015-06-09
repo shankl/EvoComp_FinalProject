@@ -2,7 +2,7 @@
 # Edit these to change parameters
 
 # Number of generations to run. Default 100
-nGens: 500
+nGens: 100
 
 # Initial Population sizes. 
 # Bacteria should be about 100x more than viruses
@@ -36,7 +36,7 @@ numResVirGenes: 5
 # Max number of children
 # Defaults 5 virus, 50 bacteria
 maxVirusChildren: 5
-maxBacteriaChildren: 50
+maxBacteriaChildren: 10
 
 # Unrelated things
 GenCSV: 1

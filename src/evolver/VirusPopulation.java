@@ -57,7 +57,7 @@ public class VirusPopulation {
 		this.shuffle();
 		ArrayList<Virus> temp = new ArrayList<Virus>();
 		double sumFit = 0;
-		for (Virus ind : inds) sumFit += ind.getFitness();
+		for (Virus ind : inds) sumFit += ind.calcObjFit();
 		// if all fitnesses are 0, don't change population
 		if (sumFit==0) return;
 
@@ -78,7 +78,7 @@ public class VirusPopulation {
 			}
 			else {
 				curPopIndex++;
-				curSumFit += inds.get(curPopIndex).getFitness();
+				curSumFit += inds.get(curPopIndex).calcObjFit();
 			}
 		}
 		inds = temp;

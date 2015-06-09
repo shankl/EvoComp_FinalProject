@@ -211,32 +211,21 @@ public class CoEvoGA {
     	return canInfect;
     }
     
-    public void genVirusOffspring(int hostIndex, int virusIndex) {
+    public void genVirusOffspring() {
     	if (printDebug == 1){
     		System.out.println("genOffspring whooohahah");
     	}
-    	Bacteria host = bacteriaPop.getAtIndex(hostIndex);
-    	Virus virus = virusPop.getAtIndex(virusIndex);
-
-        ArrayList<Virus> tempVirusPop = new ArrayList<Virus>();
-    	host.evalFitness(virus);
-    	
-
-        //the number of children is proportional to the fitness of an individual
-    	int numVirusOffspring = (int) (virus.getFitness() * maxVirusChildren);
-
-        // Kill the parents
-    	if (host.getFitness() < 0.5) {bacteriaPop.remove(hostIndex);}
-    	else {bacteriaPop.getAtIndex(hostIndex).resetFitness();}
-    	Virus parentVirus = virusPop.remove(virusIndex);
-
-        // Generate the virus offspring
-        for (int j=0; j<numVirusOffspring; j++) {
-
-            Virus child = new Virus(parentVirus, nextSerialID());
-            child.mutate(mutRate);
-            tempVirusPop.add(child);
-        }
+    	ArrayList<Virus> tempVirusPop = new ArrayList<Virus>();
+    	for (int i = 0; i < virusPop.getPopSize(); i++) {
+    		Virus virus = virusPop.getAtIndex(i);
+    		//the number of children is proportional to the fitness of an individual
+    		int numVirusOffspring = (int) (virus.getFitness()/bacteriaPop.getPopSize() * maxVirusChildren);
+    		for (int j=0; j<numVirusOffspring; j++) {
+    			Virus child = new Virus(virus, nextSerialID());
+    			child.mutate(mutRate);
+    			tempVirusPop.add(child);
+    		}
+    	}
         // all the viruses that didn't infect a bacteria do not reproduce and die
         virusPop.setPop(tempVirusPop);
     }
@@ -245,13 +234,10 @@ public class CoEvoGA {
         ArrayList<Bacteria> tempBactPop = new ArrayList<Bacteria>();
         // then children are generated for all the bacteria who were not infected
         for (int i = 0; i < bacteriaPop.getPopSize(); i++) {
-            Bacteria parentBacteria = bacteriaPop.remove(i);
-            // Have to use objective (viability based) fitness because these have not interacted with viruses
-            int numBacteriaOffspring = (int) (parentBacteria.getFitness() * maxBacteriaChildren);
-
+            //int numBacteriaOffspring = (int) (bacteriaPop.getAtIndex(i).getFitness()/virusPop.getPopSize() * maxBacteriaChildren);
+            int numBacteriaOffspring = maxBacteriaChildren;
             for (int j = 0; j < numBacteriaOffspring; j++) {
-
-                Bacteria child = new Bacteria(parentBacteria, nextSerialID());
+                Bacteria child = new Bacteria(bacteriaPop.getAtIndex(i), nextSerialID());
                 child.mutate(mutRate);
                 tempBactPop.add(child);
             }
@@ -279,16 +265,16 @@ public class CoEvoGA {
         // stop at given # gens (read in CoEvo constructor from vars file)
         int nGens = EA.getNumGens();
         int gens = 0;
-        // calc init fitnesses
+        EA.interact();
         while (gens<nGens) {
             gens++;
             
             // Interact the viruses and bacteria. When this is done, the population will be 
     		// mutated offspring
-            EA.interact();
         	EA.genVirusOffspring();
             EA.genBacteriaOffspring();
             //calc child fitnesses
+            EA.interact();
             if (EA.virusPop.getPopSize() > EA.virusPopSize * EA.kRatio || EA.bacteriaPop.getPopSize() > EA.bacteriaPopSize * EA.kRatio){
                 EA.cull();
             }

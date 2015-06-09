@@ -114,11 +114,11 @@ public class Bacteria {
     	return count;
 	}
 	
-//	public double calcObjFit(){
-//        int numDeleterious = genome.get(viabilityIndex).length - getViability();
-//        double objFit = Math.pow(1-costOfDeleteriousAllele, numDeleterious);
-//        return  objFit;
-//	}
+	public double calcObjFit(){
+        int numDeleterious = genome.get(viabilityIndex).length - getViability();
+        double objFit = Math.pow(1-costOfDeleteriousAllele, numDeleterious);
+        return  objFit;
+	}
 
 	/* returns id */
 	public int getID() {

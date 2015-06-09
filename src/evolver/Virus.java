@@ -114,12 +114,12 @@ public class Virus implements Comparable<Virus>{
     	return count;
 	}
 
-//	/* returns objective fitness */
-//	public double calcObjFit(){
-//        int numDeleterious = genome.get(viabilityIndex).length - getViability();
-//        double objFit = Math.pow(1-costOfDeleteriousAllele, numDeleterious);
-//        return  objFit;	}
-//	
+	/* returns objective fitness */
+	public double calcObjFit(){
+        int numDeleterious = genome.get(viabilityIndex).length - getViability();
+        double objFit = Math.pow(1-costOfDeleteriousAllele, numDeleterious);
+        return  objFit;	}
+	
 	/* returns virulence genes as int array */
 	public int[] getVirulenceGenes() {
 		return genome.get(virulenceIndex);
