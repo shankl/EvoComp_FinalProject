@@ -254,31 +254,35 @@ public class CoEvoGA {
     }
 
     public void evalFinalFitness(){
-    	Set<Integer> bkeys = bactParents.getKeys();
-    	int highestIndB = -1;
-    	int highestValB = -1;
-    	for(Integer key : bkeys){
-    		int currVal = bactParents.getNumChildren(key);
-    		if (currVal > highestValB) {
-    			highestIndB = key;
-    			highestValB = currVal;
-    		}
-
+    	System.out.println("Most Clones");
+    	if (!bactParents.isEmpty()){
+	    	Set<Integer> bkeys = bactParents.getKeys();
+	    	int highestIndB = -1;
+	    	int highestValB = -1;
+	    	for(Integer key : bkeys){
+	    		int currVal = bactParents.getNumChildren(key);
+	    		if (currVal > highestValB) {
+	    			highestIndB = key;
+	    			highestValB = currVal;
+	    		}
+	
+	    	}
+	    	System.out.println("Bacteria: " + bactParents.getGenomeString(highestIndB) + " with " +	 highestValB + " clones");
     	}
-
-    	Set<Integer> vkeys = virusParents.getKeys();
-    	int highestIndV = -1;
-    	int highestValV = -1;
-    	for (Integer key : vkeys){
-    		int currVal = virusParents.getNumChildren(key);
-    		if (currVal > highestValV) {
-    			highestIndV = key;
-    			highestValV = currVal;
-    		}
-    	}
-
-    	System.out.println("Most Clones \nBacteria: " + bactParents.getGenomeString(highestIndB) + " with " +
-    	 highestValB + " clones\nViruses: " + virusParents.getGenomeString(highestIndV) + " with " + highestValV + " clones");
+    	
+    	if (!virusParents.isEmpty()){
+	    	Set<Integer> vkeys = virusParents.getKeys();
+	    	int highestIndV = -1;
+	    	int highestValV = -1;
+	    	for (Integer key : vkeys){
+	    		int currVal = virusParents.getNumChildren(key);
+	    		if (currVal > highestValV) {
+	    			highestIndV = key;
+	    			highestValV = currVal;
+	    		}
+	    	}
+	    	System.out.println("Viruses: " + virusParents.getGenomeString(highestIndV) + " with " + highestValV + " clones");
+    	}  	
     }
 
 	public static void main(String[] args) throws IOException {

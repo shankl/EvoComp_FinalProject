@@ -55,6 +55,11 @@ public class ParentTracker {
 		
 		return parents.keySet();
 	}
+	
+	// if empty return true
+	public boolean isEmpty(){
+		return parents.isEmpty();
+	}
 }
 
 // data for the values in the hashmap
